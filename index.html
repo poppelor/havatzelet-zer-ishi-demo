@@ -42,11 +42,9 @@
     .wrap {
       max-width: 430px;
       margin: 0 auto;
-      padding: 16px 16px calc(210px + var(--safe-bottom));
+      padding: 16px 16px calc(250px + var(--safe-bottom));
     }
-    header.top {
-      padding: 8px 2px 4px;
-    }
+    header.top { padding: 8px 2px 4px; }
     .brand {
       font-size: 13px;
       font-weight: 700;
@@ -86,6 +84,10 @@
       margin: 0 0 14px;
       box-shadow: var(--shadow);
     }
+    .card.compact {
+      padding: 10px 12px;
+      box-shadow: none;
+    }
     .label {
       display: block;
       font-weight: 700;
@@ -106,27 +108,39 @@
       appearance: none;
       -webkit-appearance: none;
     }
+    .compact input[type="date"] {
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 16px;
+      min-height: 40px;
+    }
     input[type="date"]:focus,
     input[type="number"]:focus,
     textarea:focus {
       border-color: var(--green);
       box-shadow: 0 0 0 3px rgba(47, 93, 58, 0.15);
     }
-    textarea { min-height: 88px; resize: vertical; }
-    .who {
+    textarea { min-height: 80px; resize: vertical; }
+    .meta {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
+      align-items: end;
     }
+    .meta .who { display: flex; gap: 6px; }
+    .meta .who button,
     .who button {
-      min-height: 56px;
-      border-radius: 14px;
+      flex: 1;
+      min-height: 44px;
+      border-radius: 12px;
       border: 2px solid var(--line);
       background: #fff;
       font-weight: 700;
-      font-size: 20px;
+      font-size: 16px;
     }
-    .who button[aria-pressed="true"] {
+    .compact .who button { min-height: 40px; font-size: 15px; }
+    .who button[aria-pressed="true"],
+    .chip[aria-pressed="true"] {
       border-color: var(--green);
       background: var(--green-soft);
       color: var(--green-dark);
@@ -162,56 +176,27 @@
       font-weight: 800;
       font-size: 22px;
     }
-    .wrap-row {
+    .chips {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .toggle {
-      min-width: 72px;
-      height: 44px;
-      border-radius: 999px;
+    .chip {
+      min-height: 44px;
+      padding: 8px 14px;
+      border-radius: 12px;
       border: 2px solid var(--line);
       background: #fff;
-      font-weight: 800;
-      color: var(--muted);
+      font-weight: 700;
+      font-size: 16px;
     }
-    .toggle[aria-pressed="true"] {
-      background: var(--green);
-      border-color: var(--green);
-      color: #fff;
-    }
-    .photo-box {
-      border: 2px dashed var(--line);
-      border-radius: 14px;
-      padding: 16px;
+    .reason-chip {
+      flex: 1 1 calc(50% - 8px);
+      min-height: 48px;
       text-align: center;
-      background: #fff;
-      min-height: 56px;
-      font-weight: 700;
-      color: var(--green-dark);
     }
-    .photo-box input { display: none; }
-    .photo-preview {
-      margin-top: 12px;
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-radius: 12px;
-      display: none;
-    }
-    .photo-actions {
-      display: none;
-      margin-top: 10px;
-    }
-    .linkish {
-      background: none;
-      border: 0;
-      color: var(--rose);
-      font-weight: 700;
-      padding: 8px;
-    }
+    .custom-pct { display: none; margin-top: 10px; }
+    .custom-reason { display: none; margin-top: 10px; }
     .error {
       display: none;
       margin: 0 0 12px;
@@ -231,9 +216,10 @@
     }
     .dock-inner { max-width: 430px; margin: 0 auto; }
     .raw { margin: 0; color: var(--muted); font-size: 14px; font-weight: 600; }
+    .discount-line { margin: 0; color: var(--muted); font-size: 14px; font-weight: 600; }
     .sticker {
       margin: 2px 0 10px;
-      font-size: 28px;
+      font-size: 26px;
       line-height: 1.15;
       font-weight: 800;
       color: var(--rose);
@@ -252,11 +238,7 @@
     .submit:active { background: var(--green-dark); }
     .success { display: none; }
     .success h1 { margin-top: 12px; }
-    .summary {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
+    .summary { list-style: none; margin: 0; padding: 0; }
     .summary li {
       display: flex;
       justify-content: space-between;
@@ -293,19 +275,6 @@
 
     <div class="banner">
       המחירים בטופס הזה הם מחירים לדוגמה, מתוך פריטי ניסיון שנפתחו בקופה. אלה לא מחירי הספק האמיתיים.
-    </div>
-
-    <div class="card">
-      <label class="label" for="date">תאריך</label>
-      <input id="date" type="date" required />
-    </div>
-
-    <div class="card">
-      <div class="label" id="who-label">מי ממלאת</div>
-      <div class="who" role="group" aria-labelledby="who-label">
-        <button type="button" data-who="אורלי" aria-pressed="false">אורלי</button>
-        <button type="button" data-who="עומר" aria-pressed="false">עומר</button>
-      </div>
     </div>
 
     <div class="card">
@@ -346,12 +315,30 @@
     </div>
 
     <div class="card">
-      <div class="wrap-row">
-        <div>
-          <div class="label" style="margin:0">נייר עטיפה וסרט</div>
-          <div class="hint">₪5 · מחיר לדוגמה · לא חובה</div>
+      <div class="label">הנחה <span class="hint">לא חובה</span></div>
+      <div class="chips" id="pct-chips" role="group" aria-label="אחוז הנחה">
+        <button type="button" class="chip" data-pct="10" aria-pressed="false">10%</button>
+        <button type="button" class="chip" data-pct="20" aria-pressed="false">20%</button>
+        <button type="button" class="chip" data-pct="30" aria-pressed="false">30%</button>
+        <button type="button" class="chip" data-pct="50" aria-pressed="false">50%</button>
+        <button type="button" class="chip" data-pct="custom" aria-pressed="false">אחר</button>
+      </div>
+      <div class="custom-pct" id="custom-pct-wrap">
+        <label class="label" for="custom-pct">אחוז הנחה</label>
+        <input id="custom-pct" type="number" inputmode="numeric" min="1" max="100" step="1" placeholder="למשל 15" />
+      </div>
+      <div id="reason-block" style="display:none; margin-top:14px">
+        <div class="label" id="reason-label">סיבת ההנחה</div>
+        <div class="chips" role="group" aria-labelledby="reason-label">
+          <button type="button" class="chip reason-chip" data-reason="זר ישן" aria-pressed="false">זר ישן</button>
+          <button type="button" class="chip reason-chip" data-reason="פרחים קצת פגומים" aria-pressed="false">פרחים קצת פגומים</button>
+          <button type="button" class="chip reason-chip" data-reason="לקוח קבוע" aria-pressed="false">לקוח קבוע</button>
+          <button type="button" class="chip reason-chip" data-reason="אחר" aria-pressed="false">אחר</button>
         </div>
-        <button type="button" class="toggle" id="wrap" aria-pressed="false">לא</button>
+        <div class="custom-reason" id="custom-reason-wrap">
+          <label class="label" for="custom-reason">פירוט</label>
+          <input id="custom-reason" type="text" maxlength="120" placeholder="למה ניתנה ההנחה" style="width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font-size:16px;outline:none" />
+        </div>
       </div>
     </div>
 
@@ -362,18 +349,24 @@
     </div>
 
     <div class="card">
-      <div class="label">צילום הזר <span class="hint">לא חובה</span></div>
-      <label class="photo-box" for="photo">הוספת צילום מהטלפון</label>
-      <input id="photo" type="file" accept="image/*" />
-      <img id="preview" class="photo-preview" alt="תצוגה מקדימה של צילום הזר" />
-      <div class="photo-actions" id="photo-actions">
-        <button type="button" class="linkish" id="remove-photo">הסרת הצילום</button>
-      </div>
-    </div>
-
-    <div class="card">
       <label class="label" for="notes">הערות <span class="hint">לא חובה</span></label>
       <textarea id="notes" placeholder="משהו חשוב על הזר הזה"></textarea>
+    </div>
+
+    <div class="card compact">
+      <div class="meta">
+        <div>
+          <label class="label" for="date" style="font-size:13px;margin-bottom:6px">תאריך</label>
+          <input id="date" type="date" required />
+        </div>
+        <div>
+          <div class="label" id="who-label" style="font-size:13px;margin-bottom:6px">מי ממלאת</div>
+          <div class="who" role="group" aria-labelledby="who-label">
+            <button type="button" data-who="אורלי" aria-pressed="false">אורלי</button>
+            <button type="button" data-who="עומר" aria-pressed="false">עומר</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <p class="error" id="error" role="alert"></p>
@@ -381,7 +374,8 @@
 
   <div class="dock" id="dock">
     <div class="dock-inner">
-      <p class="raw" id="raw">סכום לפני עיגול: ₪0</p>
+      <p class="raw" id="raw">סכום לפני הנחה: ₪0</p>
+      <p class="discount-line" id="discount-line">הנחה: ₪0</p>
       <div class="sticker" id="sticker" aria-live="polite">המחיר למדבקה: ₪0</div>
       <button type="button" class="submit" id="submit">שליחת הדיווח</button>
     </div>
@@ -402,22 +396,25 @@
 
   <script>
     (function () {
-      const PRICES = { rose: 15, lisianthus: 15, greenery: 6, wrap: 5 };
-      const NAMES = { rose: "ורד אדום", lisianthus: "ליזיאנטוס", greenery: "ירק" };
+      const PRICES = { rose: 15, lisianthus: 15, greenery: 6 };
       const qty = { rose: 0, lisianthus: 0, greenery: 0 };
       let who = "";
-      let wrapping = false;
       let lastCalculated = 0;
-      let photoName = "";
-      let photoDataUrl = "";
+      let selectedPct = 0;
+      let customMode = false;
+      let reasonKey = "";
 
       const dateEl = document.getElementById("date");
       const finalEl = document.getElementById("final-price");
       const rawEl = document.getElementById("raw");
+      const discountLineEl = document.getElementById("discount-line");
       const stickerEl = document.getElementById("sticker");
       const errorEl = document.getElementById("error");
-      const preview = document.getElementById("preview");
-      const photoActions = document.getElementById("photo-actions");
+      const customPctWrap = document.getElementById("custom-pct-wrap");
+      const customPctEl = document.getElementById("custom-pct");
+      const reasonBlock = document.getElementById("reason-block");
+      const customReasonWrap = document.getElementById("custom-reason-wrap");
+      const customReasonEl = document.getElementById("custom-reason");
 
       function todayISO() {
         const parts = new Intl.DateTimeFormat("en-CA", {
@@ -436,22 +433,68 @@
         return Math.ceil(n / 5) * 5;
       }
 
+      function money(n) {
+        if (Number.isInteger(n)) return String(n);
+        return (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1");
+      }
+
       function rawSum() {
         return qty.rose * PRICES.rose
           + qty.lisianthus * PRICES.lisianthus
-          + qty.greenery * PRICES.greenery
-          + (wrapping ? PRICES.wrap : 0);
+          + qty.greenery * PRICES.greenery;
+      }
+
+      function currentPct() {
+        if (customMode) {
+          const n = Number(customPctEl.value);
+          if (!customPctEl.value || Number.isNaN(n) || n < 0) return 0;
+          return Math.min(100, n);
+        }
+        return selectedPct || 0;
+      }
+
+      function reasonText() {
+        if (!reasonKey) return "";
+        if (reasonKey === "אחר") return (customReasonEl.value || "").trim();
+        return reasonKey;
+      }
+
+      function totals() {
+        const raw = rawSum();
+        const pct = currentPct();
+        const discountAmt = raw * (pct / 100);
+        const after = Math.max(0, raw - discountAmt);
+        const calculated = roundUp5(after);
+        return { raw: raw, pct: pct, discountAmt: discountAmt, after: after, calculated: calculated };
+      }
+
+      function updateReasonVisibility() {
+        const pct = currentPct();
+        reasonBlock.style.display = pct > 0 ? "block" : "none";
+        if (pct <= 0) {
+          reasonKey = "";
+          customReasonEl.value = "";
+          customReasonWrap.style.display = "none";
+          document.querySelectorAll(".reason-chip").forEach(function (b) {
+            b.setAttribute("aria-pressed", "false");
+          });
+        }
       }
 
       function renderTotals() {
-        const raw = rawSum();
-        const calculated = roundUp5(raw);
-        rawEl.textContent = "סכום לפני עיגול: ₪" + raw;
-        stickerEl.textContent = "המחיר למדבקה: ₪" + calculated;
-        if (String(finalEl.value) === String(lastCalculated) || finalEl.value === "") {
-          finalEl.value = calculated === 0 ? "" : String(calculated);
+        const t = totals();
+        rawEl.textContent = "סכום לפני הנחה: ₪" + money(t.raw);
+        if (t.pct > 0) {
+          discountLineEl.textContent = "הנחה " + money(t.pct) + "%: ₪" + money(t.discountAmt);
+        } else {
+          discountLineEl.textContent = "הנחה: ₪0";
         }
-        lastCalculated = calculated;
+        stickerEl.textContent = "המחיר למדבקה: ₪" + money(t.calculated);
+        if (String(finalEl.value) === String(lastCalculated) || finalEl.value === "") {
+          finalEl.value = t.calculated === 0 ? "" : String(t.calculated);
+        }
+        lastCalculated = t.calculated;
+        updateReasonVisibility();
       }
 
       dateEl.value = todayISO();
@@ -482,65 +525,76 @@
         });
       });
 
-      document.getElementById("wrap").addEventListener("click", function () {
-        wrapping = !wrapping;
-        this.setAttribute("aria-pressed", wrapping ? "true" : "false");
-        this.textContent = wrapping ? "כן" : "לא";
-        renderTotals();
+      document.querySelectorAll("#pct-chips .chip").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const val = btn.getAttribute("data-pct");
+          const already = btn.getAttribute("aria-pressed") === "true";
+          document.querySelectorAll("#pct-chips .chip").forEach(function (b) {
+            b.setAttribute("aria-pressed", "false");
+          });
+          if (already) {
+            selectedPct = 0;
+            customMode = false;
+            customPctWrap.style.display = "none";
+            customPctEl.value = "";
+          } else {
+            btn.setAttribute("aria-pressed", "true");
+            if (val === "custom") {
+              customMode = true;
+              customPctWrap.style.display = "block";
+              selectedPct = 0;
+              customPctEl.focus();
+            } else {
+              customMode = false;
+              customPctWrap.style.display = "none";
+              customPctEl.value = "";
+              selectedPct = Number(val);
+            }
+          }
+          renderTotals();
+        });
       });
 
-      document.getElementById("photo").addEventListener("change", function (e) {
-        const file = e.target.files && e.target.files[0];
-        if (!file) return;
-        photoName = file.name;
-        const reader = new FileReader();
-        reader.onload = function () {
-          photoDataUrl = String(reader.result || "");
-          preview.src = photoDataUrl;
-          preview.style.display = "block";
-          photoActions.style.display = "block";
-        };
-        reader.readAsDataURL(file);
-      });
+      customPctEl.addEventListener("input", function () { renderTotals(); });
 
-      document.getElementById("remove-photo").addEventListener("click", function () {
-        photoName = "";
-        photoDataUrl = "";
-        preview.src = "";
-        preview.style.display = "none";
-        photoActions.style.display = "none";
-        document.getElementById("photo").value = "";
+      document.querySelectorAll(".reason-chip").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          reasonKey = btn.getAttribute("data-reason") || "";
+          document.querySelectorAll(".reason-chip").forEach(function (b) {
+            b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+          });
+          customReasonWrap.style.display = reasonKey === "אחר" ? "block" : "none";
+          if (reasonKey !== "אחר") customReasonEl.value = "";
+          errorEl.style.display = "none";
+        });
       });
 
       function resetForm() {
         who = "";
-        wrapping = false;
         qty.rose = qty.lisianthus = qty.greenery = 0;
         lastCalculated = 0;
-        photoName = "";
-        photoDataUrl = "";
+        selectedPct = 0;
+        customMode = false;
+        reasonKey = "";
         dateEl.value = todayISO();
         finalEl.value = "";
         document.getElementById("notes").value = "";
-        document.getElementById("photo").value = "";
-        preview.src = "";
-        preview.style.display = "none";
-        photoActions.style.display = "none";
-        document.querySelectorAll(".who button").forEach(function (b) {
+        customPctEl.value = "";
+        customReasonEl.value = "";
+        customPctWrap.style.display = "none";
+        customReasonWrap.style.display = "none";
+        reasonBlock.style.display = "none";
+        document.querySelectorAll(".who button, #pct-chips .chip, .reason-chip").forEach(function (b) {
           b.setAttribute("aria-pressed", "false");
         });
         document.querySelectorAll(".stem .qty").forEach(function (el) { el.textContent = "0"; });
-        const wrapBtn = document.getElementById("wrap");
-        wrapBtn.setAttribute("aria-pressed", "false");
-        wrapBtn.textContent = "לא";
         errorEl.style.display = "none";
         renderTotals();
       }
 
       function payload() {
-        const raw = rawSum();
-        const calculated = roundUp5(raw);
-        const finalPrice = finalEl.value === "" ? calculated : Number(finalEl.value);
+        const t = totals();
+        const finalPrice = finalEl.value === "" ? t.calculated : Number(finalEl.value);
         return {
           timestamp: new Date().toISOString(),
           date: dateEl.value,
@@ -548,12 +602,16 @@
           rose: qty.rose,
           lisianthus: qty.lisianthus,
           greenery: qty.greenery,
-          wrapping: wrapping ? "כן" : "לא",
-          raw: raw,
-          calculated: calculated,
+          wrapping: t.pct > 0 ? String(t.pct) : "",
+          raw: t.raw,
+          calculated: t.calculated,
           finalPrice: finalPrice,
           notes: document.getElementById("notes").value.trim(),
-          photo: photoName ? photoName : ""
+          photo: t.pct > 0 ? reasonText() : "",
+          photoDataUrl: "",
+          discountPct: t.pct,
+          discountAmount: t.discountAmt,
+          reason: t.pct > 0 ? reasonText() : ""
         };
       }
 
@@ -564,16 +622,17 @@
           ["ורד אדום", String(data.rose)],
           ["ליזיאנטוס", String(data.lisianthus)],
           ["ירק", String(data.greenery)],
-          ["נייר עטיפה וסרט", data.wrapping],
-          ["סכום לפני עיגול", "₪" + data.raw],
-          ["מחיר למדבקה", "₪" + data.calculated],
-          ["מחיר סופי על המדבקה", "₪" + data.finalPrice]
+          ["סכום לפני הנחה", "₪" + money(data.raw)],
+          ["הנחה", data.discountPct > 0 ? (money(data.discountPct) + "% · ₪" + money(data.discountAmount)) : "אין"],
+          ["סיבת ההנחה", data.reason || ""],
+          ["מחיר למדבקה", "₪" + money(data.calculated)],
+          ["מחיר סופי על המדבקה", "₪" + money(data.finalPrice)]
         ];
         if (data.notes) lines.push(["הערות", data.notes]);
-        if (data.photo) lines.push(["צילום", data.photo]);
         const ul = document.getElementById("summary");
         ul.innerHTML = "";
         lines.forEach(function (pair) {
+          if (pair[0] === "סיבת ההנחה" && !pair[1]) return;
           const li = document.createElement("li");
           const a = document.createElement("span");
           const b = document.createElement("span");
@@ -586,7 +645,7 @@
         document.getElementById("success-title").textContent = savedToSheet ? "הדיווח נשמר" : "החישוב מוכן";
         document.getElementById("save-note").textContent = savedToSheet
           ? "השורה נכנסה לגיליון הדיווחים."
-          : "החישוב עבד, כולל העיגול למדבקה. בגרסת הדמו הזאת השמירה האוטומטית לגיליון גוגל עדיין לא מחוברת, ולכן השורה לא נרשמה שם עדיין. הצילום נשאר רק על הטלפון.";
+          : "החישוב עבד, אבל השורה לא נשמרה בגיליון.";
         document.getElementById("form-view").style.display = "none";
         document.getElementById("dock").style.display = "none";
         document.getElementById("success-view").style.display = "block";
@@ -600,8 +659,15 @@
           errorEl.style.display = "block";
           return;
         }
-        if (data.rose + data.lisianthus + data.greenery === 0 && data.wrapping !== "כן") {
-          errorEl.textContent = "צריך לבחור לפחות ענף אחד, או עטיפה.";
+        if (data.rose + data.lisianthus + data.greenery === 0) {
+          errorEl.textContent = "צריך לבחור לפחות ענף אחד.";
+          errorEl.style.display = "block";
+          return;
+        }
+        if (data.discountPct > 0 && !data.reason) {
+          errorEl.textContent = reasonKey === "אחר"
+            ? "צריך לכתוב את סיבת ההנחה."
+            : "צריך לבחור סיבה להנחה.";
           errorEl.style.display = "block";
           return;
         }
@@ -611,8 +677,6 @@
           return;
         }
         errorEl.style.display = "none";
-        // A public page cannot write to a private Google Sheet by itself.
-        // When an Apps Script web app URL is added below, submissions will be posted there.
         const ENDPOINT = "https://script.google.com/macros/s/AKfycbx_rw-0YHxxMUjzj9jWMwgHt2yuS_n0qVqTIUBeFQWG_nuCkBcdkqJCp2GbyLt1gjA/exec";
         if (!ENDPOINT) {
           showSuccess(data, false);
@@ -624,7 +688,7 @@
         fetch(ENDPOINT, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(Object.assign({}, data, { photoDataUrl: photoDataUrl ? "attached" : "" }))
+          body: JSON.stringify(data)
         }).then(function (res) {
           return res.ok ? showSuccess(data, true) : Promise.reject();
         }).catch(function () {
@@ -644,8 +708,7 @@
         window.scrollTo(0, 0);
       });
 
-      // Self-check of the agreed example: 5 roses + 3 lisianthus + 4 greenery = 144 → 145
-      if (roundUp5(5 * 15 + 3 * 15 + 4 * 6) !== 145) {
+      if (roundUp5(144 * 0.8) !== 120) {
         console.error("Rounding check failed");
       }
 
