@@ -9,27 +9,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <style>.wrap { padding-bottom: calc(230px + var(--safe-bottom)); }</style>
+  <style>.wrap { padding-bottom: calc(160px + var(--safe-bottom)); }</style>
 </head>
 <body>
   <div class="wrap" id="form-view">
     <header class="top">
       <p class="nav-home"><a href="./">כל הטפסים</a></p>
-      <p class="brand">משתלת חבצלת</p>
       <h1>דוח בלאי</h1>
-      <span class="badge">דמו · שמות ומחירים לדוגמה</span>
+      <p class="subhead">דמו · שמות ומחירים לדוגמה</p>
     </header>
-    <div class="banner">השמות והמחירים הם לדוגמה. העלות המשוערת מחושבת לפי מחירי הדוגמה בטופס, לא לפי מחירי ספק אמיתיים.</div>
     
-    <div class="card">
-      <div class="label">זרים מהקטלוג <span class="hint">שמות ומחירים לדוגמה</span></div>
+    <div class="tabs" role="tablist">
+      <button type="button" id="tab-bouquets" role="tab" aria-selected="true">זרים</button>
+      <button type="button" id="tab-stems" role="tab" aria-selected="false">ענפים</button>
+    </div>
+    <div class="card table-card" id="panel-bouquets" role="tabpanel">
       <div id="bouquet-list"></div>
     </div>
-    <div class="card">
-      <div class="label">ענפים בודדים <span class="hint">מחירים לדוגמה</span></div>
+    <div class="card table-card" id="panel-stems" role="tabpanel" hidden>
       <div id="stem-list"></div>
     </div>
-    <div class="card">
+    <div class="card compact">
       <div class="label" id="reason-label">סיבת הבלאי</div>
       <div class="chips" role="group" aria-labelledby="reason-label">
         <button type="button" class="chip reason-chip" data-reason="נבל" aria-pressed="false">נבל</button>
@@ -37,36 +37,37 @@
         <button type="button" class="chip reason-chip" data-reason="לא נמכר בזמן" aria-pressed="false">לא נמכר בזמן</button>
         <button type="button" class="chip reason-chip" data-reason="אחר" aria-pressed="false">אחר</button>
       </div>
-      <div id="reason-other-wrap" style="display:none;margin-top:10px">
-        <label class="label" for="reason-other">פירוט</label>
-        <input id="reason-other" type="text" maxlength="120" placeholder="מה הסיבה" />
+      <div id="reason-other-wrap" style="display:none;margin-top:6px">
+        <input id="reason-other" type="text" maxlength="120" placeholder="פירוט הסיבה" />
       </div>
     </div>
-    <div class="card">
-      <div class="label">צילום <span class="hint">לא חובה</span></div>
-      <label class="photo-box" for="photo">הוספת צילום מהטלפון
-        <input id="photo" type="file" accept="image/*" />
-      </label>
+    <div class="card compact">
+      <div class="inline-row">
+        <div>
+          <label class="label">צילום</label>
+          <label class="photo-box" for="photo">הוספת צילום
+            <input id="photo" type="file" accept="image/*" />
+          </label>
+          <div id="photo-actions" style="display:none">
+            <button type="button" class="remove-btn" id="remove-photo">×</button>
+          </div>
+        </div>
+        <div>
+          <label class="label" for="notes">הערות</label>
+          <input id="notes" type="text" placeholder="לא חובה" />
+        </div>
+      </div>
       <img id="preview" class="photo-preview" alt="תצוגה מקדימה" />
-      <div id="photo-actions" style="display:none">
-        <button type="button" class="remove-btn" id="remove-photo">הסרת הצילום</button>
-      </div>
     </div>
-    
-    <div class="card">
-      <label class="label" for="notes">הערות <span class="hint">לא חובה</span></label>
-      <textarea id="notes" placeholder="משהו חשוב לציין"></textarea>
-    </div>
-
     
     <div class="card compact">
       <div class="meta">
         <div>
-          <label class="label" for="date" style="font-size:13px;margin-bottom:6px">תאריך</label>
+          <label class="label" for="date">תאריך</label>
           <input id="date" type="date" required />
         </div>
         <div>
-          <div class="label" id="who-label" style="font-size:13px;margin-bottom:6px">מי ממלאת</div>
+          <div class="label" id="who-label">מי ממלאת</div>
           <div class="who" role="group" aria-labelledby="who-label">
             <button type="button" data-who="אורלי" aria-pressed="false">אורלי</button>
             <button type="button" data-who="עומר" aria-pressed="false">עומר</button>
@@ -86,9 +87,8 @@
   </div>
   <div class="wrap success" id="success-view">
     <header class="top">
-      <p class="brand">משתלת חבצלת</p>
-      <span class="badge">דמו · שמות ומחירים לדוגמה</span>
       <h1 id="success-title">הדיווח מוכן</h1>
+      <p class="subhead">דמו · שמות ומחירים לדוגמה</p>
     </header>
     <div class="card"><ul class="summary" id="summary"></ul></div>
     <p class="note-limit" id="save-note"></p>
@@ -108,8 +108,18 @@
       document.getElementById("date").value = H.todayISO();
       H.bindWho(function () { return who; }, function (v) { who = v; });
       H.bindPhoto("photo", "preview", "photo-actions", "remove-photo", function (p) { photo = p; });
-      H.renderBouquetSteppers(document.getElementById("bouquet-list"), bqty, { showPrices: true, onChange: renderBar });
+      H.renderBouquetSteppers(document.getElementById("bouquet-list"), bqty, { onChange: renderBar });
       H.renderStemSteppers(document.getElementById("stem-list"), sqty, { showPrices: true, onChange: renderBar });
+
+      function showTab(which) {
+        const b = which === "bouquets";
+        document.getElementById("tab-bouquets").setAttribute("aria-selected", b ? "true" : "false");
+        document.getElementById("tab-stems").setAttribute("aria-selected", b ? "false" : "true");
+        document.getElementById("panel-bouquets").hidden = !b;
+        document.getElementById("panel-stems").hidden = b;
+      }
+      document.getElementById("tab-bouquets").addEventListener("click", function () { showTab("bouquets"); });
+      document.getElementById("tab-stems").addEventListener("click", function () { showTab("stems"); });
 
       document.querySelectorAll(".reason-chip").forEach(function (btn) {
         btn.addEventListener("click", function () {

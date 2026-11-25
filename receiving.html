@@ -9,82 +9,83 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <style>.wrap { padding-bottom: calc(250px + var(--safe-bottom)); }</style>
+  <style>.wrap { padding-bottom: calc(160px + var(--safe-bottom)); }</style>
 </head>
 <body>
   <div class="wrap" id="form-view">
     <header class="top">
       <p class="nav-home"><a href="./">כל הטפסים</a></p>
-      <p class="brand">משתלת חבצלת</p>
       <h1>קבלת סחורה</h1>
-      <span class="badge">דמו · שמות ומחירים לדוגמה</span>
+      <p class="subhead">דמו · שמות לדוגמה · עלות לפני מע״מ</p>
     </header>
-    <div class="banner">שמות הפריטים הם לדוגמה. העלויות הן בש״ח לפני מע״מ, לפי מה שממלאים מהתעודה.</div>
     
-    <div class="card">
-      <div class="label" id="supplier-label">ספק</div>
-      <div class="chips" role="group" aria-labelledby="supplier-label">
-        <button type="button" class="chip" data-supplier="פרחי כרמי" aria-pressed="true">פרחי כרמי</button>
-        <button type="button" class="chip" data-supplier="other" aria-pressed="false">אחר</button>
+    <div class="card compact">
+      <div class="inline-row">
+        <div>
+          <div class="label" id="supplier-label">ספק</div>
+          <div class="chips" role="group" aria-labelledby="supplier-label">
+            <button type="button" class="chip" data-supplier="פרחי כרמי" aria-pressed="true">פרחי כרמי</button>
+            <button type="button" class="chip" data-supplier="other" aria-pressed="false">אחר</button>
+          </div>
+        </div>
+        <div>
+          <label class="label" for="note-number">מספר תעודה</label>
+          <input id="note-number" type="text" placeholder="מספר" />
+        </div>
       </div>
-      <div id="supplier-other-wrap" style="display:none;margin-top:10px">
-        <label class="label" for="supplier-other">שם הספק</label>
-        <input id="supplier-other" type="text" maxlength="80" />
-      </div>
-    </div>
-    <div class="card">
-      <label class="label" for="note-number">מספר תעודת משלוח</label>
-      <input id="note-number" type="text" inputmode="text" placeholder="מספר התעודה" />
-    </div>
-    <div class="card">
-      <div class="label">מה הגיע <span class="hint">שמות לדוגמה · עלות יחידה בש״ח, לפני מע״מ</span></div>
-      <div id="stem-lines"></div>
-    </div>
-    <div class="card">
-      <div class="label">פריטים נוספים</div>
-      <div id="extra-lines"></div>
-      <button type="button" class="add-btn" id="add-extra">הוספת פריט חדש</button>
-    </div>
-    <div class="card">
-      <label class="label" for="note-total">סה״כ בתעודת המשלוח (₪, לפני מע״מ)</label>
-      <input id="note-total" type="number" inputmode="decimal" min="0" step="0.01" />
-      <p class="hint" id="mismatch-hint" style="margin-top:8px;display:none"></p>
-    </div>
-    <div class="card">
-      <label class="check-row">
-        <input type="checkbox" id="matches" />
-        <span>התעודה תואמת למה שספרתי</span>
-      </label>
-      <div id="mismatch-notes-wrap" style="margin-top:12px">
-        <label class="label" for="mismatch-notes">הערות אם יש אי-התאמה</label>
-        <textarea id="mismatch-notes" placeholder="מה לא תאם לתעודה"></textarea>
+      <div id="supplier-other-wrap" style="display:none;margin-top:6px">
+        <input id="supplier-other" type="text" maxlength="80" placeholder="שם הספק" />
       </div>
     </div>
-    <div class="card">
-      <div class="label">צילום התעודה <span class="hint">לא חובה</span></div>
-      <label class="photo-box" for="photo">הוספת צילום מהטלפון
-        <input id="photo" type="file" accept="image/*" />
-      </label>
+    <div class="card table-card">
+      <div id="recv-table" class="grid-recv"></div>
+      <button type="button" class="add-btn" id="add-extra">+ הוספת פריט חדש</button>
+    </div>
+    <div class="card compact">
+      <div class="inline-row">
+        <div>
+          <label class="label" for="note-total">סה״כ בתעודה (₪, לפני מע״מ)</label>
+          <input id="note-total" type="number" inputmode="decimal" min="0" step="0.01" />
+        </div>
+        <div>
+          <label class="check-row" style="margin-top:18px">
+            <input type="checkbox" id="matches" />
+            <span>התעודה תואמת</span>
+          </label>
+        </div>
+      </div>
+      <p class="hint" id="mismatch-hint" style="display:none;margin-top:6px"></p>
+      <div id="mismatch-notes-wrap" style="margin-top:6px">
+        <input id="mismatch-notes" type="text" placeholder="הערות אם יש אי-התאמה" />
+      </div>
+    </div>
+    <div class="card compact">
+      <div class="inline-row">
+        <div>
+          <label class="label">צילום התעודה</label>
+          <label class="photo-box" for="photo">הוספת צילום
+            <input id="photo" type="file" accept="image/*" />
+          </label>
+          <div id="photo-actions" style="display:none">
+            <button type="button" class="remove-btn" id="remove-photo">×</button>
+          </div>
+        </div>
+        <div>
+          <label class="label" for="notes">הערות</label>
+          <input id="notes" type="text" placeholder="לא חובה" />
+        </div>
+      </div>
       <img id="preview" class="photo-preview" alt="תצוגה מקדימה של התעודה" />
-      <div id="photo-actions" style="display:none">
-        <button type="button" class="remove-btn" id="remove-photo">הסרת הצילום</button>
-      </div>
     </div>
-    
-    <div class="card">
-      <label class="label" for="notes">הערות <span class="hint">לא חובה</span></label>
-      <textarea id="notes" placeholder="משהו חשוב לציין"></textarea>
-    </div>
-
     
     <div class="card compact">
       <div class="meta">
         <div>
-          <label class="label" for="date" style="font-size:13px;margin-bottom:6px">תאריך</label>
+          <label class="label" for="date">תאריך</label>
           <input id="date" type="date" required />
         </div>
         <div>
-          <div class="label" id="who-label" style="font-size:13px;margin-bottom:6px">מי ממלאת</div>
+          <div class="label" id="who-label">מי ממלאת</div>
           <div class="who" role="group" aria-labelledby="who-label">
             <button type="button" data-who="אורלי" aria-pressed="false">אורלי</button>
             <button type="button" data-who="עומר" aria-pressed="false">עומר</button>
@@ -98,15 +99,15 @@
   </div>
   <div class="dock" id="dock">
     <div class="dock-inner">
-      <p class="sub" id="sub">סה״כ בתעודה: לא מולא</p><div class="sticker" id="sticker" aria-live="polite">סה״כ מחושב: ₪0</div>
+      <p class="sub" id="sub">סה״כ בתעודה: לא מולא</p>
+      <div class="sticker" id="sticker" aria-live="polite">סה״כ מחושב: ₪0</div>
       <button type="button" class="submit" id="submit">שליחת הדיווח</button>
     </div>
   </div>
   <div class="wrap success" id="success-view">
     <header class="top">
-      <p class="brand">משתלת חבצלת</p>
-      <span class="badge">דמו · שמות ומחירים לדוגמה</span>
       <h1 id="success-title">הדיווח מוכן</h1>
+      <p class="subhead">דמו · שמות ומחירים לדוגמה</p>
     </header>
     <div class="card"><ul class="summary" id="summary"></ul></div>
     <p class="note-limit" id="save-note"></p>
@@ -137,68 +138,166 @@
           });
           document.getElementById("supplier-other-wrap").style.display = supplier === "other" ? "block" : "none";
           H.hideError();
-          renderBar();
         });
       });
 
-      const stemBox = document.getElementById("stem-lines");
-      H.STEMS.forEach(function (s) {
-        const card = document.createElement("div");
-        card.className = "extra-row";
-        card.style.borderTop = stemBox.children.length ? "1px solid var(--line)" : "0";
-        card.innerHTML = '<div class="stem-name">' + s.name + '</div>' +
-          '<div class="line-grid">' +
-          '<div><label class="label" for="qty-' + s.id + '">כמות שהגיעה</label><input id="qty-' + s.id + '" type="number" inputmode="numeric" min="0" step="1" value="" /></div>' +
-          '<div><label class="label" for="cost-' + s.id + '">עלות יחידה</label><input id="cost-' + s.id + '" type="number" inputmode="decimal" min="0" step="0.01" placeholder="₪ לפני מע״מ" /></div>' +
-          '</div><div class="line-total" id="line-' + s.id + '">סכום: ₪0</div>';
-        stemBox.appendChild(card);
-        function upd() {
-          lines[s.name].qty = Number(document.getElementById("qty-" + s.id).value) || 0;
-          lines[s.name].cost = document.getElementById("cost-" + s.id).value;
-          const sum = lines[s.name].qty * (Number(lines[s.name].cost) || 0);
-          document.getElementById("line-" + s.id).textContent = "סכום: ₪" + H.money(sum);
-          renderBar();
-        }
-        document.getElementById("qty-" + s.id).addEventListener("input", upd);
-        document.getElementById("cost-" + s.id).addEventListener("input", upd);
-      });
+      const table = document.getElementById("recv-table");
 
-      function renderExtras() {
-        const box = document.getElementById("extra-lines");
-        box.innerHTML = "";
-        extras.forEach(function (row, i) {
+      function makeStep(state, qtyEl, onChange) {
+        const box = document.createElement("div");
+        box.className = "stepper";
+        const minus = document.createElement("button");
+        minus.type = "button";
+        minus.textContent = "−";
+        qtyEl.className = "qty";
+        qtyEl.textContent = String(Number(state.qty) || 0);
+        const plus = document.createElement("button");
+        plus.type = "button";
+        plus.textContent = "+";
+        minus.addEventListener("click", function () {
+          state.qty = Math.max(0, (Number(state.qty) || 0) - 1);
+          qtyEl.textContent = String(state.qty);
+          onChange();
+        });
+        plus.addEventListener("click", function () {
+          state.qty = (Number(state.qty) || 0) + 1;
+          qtyEl.textContent = String(state.qty);
+          onChange();
+        });
+        box.appendChild(minus);
+        box.appendChild(qtyEl);
+        box.appendChild(plus);
+        return box;
+      }
+
+      function addHead() {
+        [["name","פריט"],["","כמות"],["","עלות"],["sum","סכום"]].forEach(function (t) {
           const el = document.createElement("div");
-          el.className = "extra-row";
-          el.innerHTML = '<label class="label">שם הפריט</label><input type="text" data-ex="name" maxlength="80" />' +
-            '<div class="line-grid">' +
-            '<div><label class="label">כמות</label><input type="number" data-ex="qty" inputmode="numeric" min="0" step="1" /></div>' +
-            '<div><label class="label">עלות יחידה</label><input type="number" data-ex="cost" inputmode="decimal" min="0" step="0.01" placeholder="₪ לפני מע״מ" /></div>' +
-            '</div><div class="line-total">סכום: ₪' + H.money((Number(row.qty)||0)*(Number(row.cost)||0)) + '</div>' +
-            '<button type="button" class="remove-btn">הסרת הפריט</button>';
-          const nameI = el.querySelector('[data-ex="name"]');
-          const qtyI = el.querySelector('[data-ex="qty"]');
-          const costI = el.querySelector('[data-ex="cost"]');
-          nameI.value = row.name; qtyI.value = row.qty; costI.value = row.cost;
-          function upd() {
-            extras[i] = { name: nameI.value, qty: qtyI.value, cost: costI.value };
-            renderBar();
-            el.querySelector(".line-total").textContent = "סכום: ₪" + H.money((Number(qtyI.value)||0)*(Number(costI.value)||0));
-          }
-          nameI.addEventListener("input", upd);
-          qtyI.addEventListener("input", upd);
-          costI.addEventListener("input", upd);
-          el.querySelector(".remove-btn").addEventListener("click", function () {
-            extras.splice(i, 1);
-            renderExtras();
-            renderBar();
-          });
-          box.appendChild(el);
+          el.className = "th" + (t[0] ? " " + t[0] : "");
+          el.textContent = t[1];
+          table.appendChild(el);
         });
       }
 
+      function mountStem(s) {
+        const state = lines[s.name];
+        const nameCel = document.createElement("div");
+        nameCel.className = "td name";
+        nameCel.textContent = s.name;
+        table.appendChild(nameCel);
+
+        const qtyCel = document.createElement("div");
+        qtyCel.className = "td cell stem";
+        qtyCel.setAttribute("data-stem", s.id);
+        const qtyEl = document.createElement("div");
+        qtyEl.id = "qty-" + s.id;
+        qtyCel.appendChild(makeStep(state, qtyEl, function () { updateStemSum(s); renderBar(); }));
+        table.appendChild(qtyCel);
+
+        const costCel = document.createElement("div");
+        costCel.className = "td cell";
+        const cost = document.createElement("input");
+        cost.className = "cost-in";
+        cost.type = "number";
+        cost.inputMode = "decimal";
+        cost.min = "0";
+        cost.step = "0.01";
+        cost.placeholder = "₪";
+        cost.id = "cost-" + s.id;
+        cost.value = state.cost;
+        cost.addEventListener("input", function () {
+          state.cost = cost.value;
+          updateStemSum(s);
+          renderBar();
+        });
+        costCel.appendChild(cost);
+        table.appendChild(costCel);
+
+        const sumCel = document.createElement("div");
+        sumCel.className = "td sum";
+        sumCel.id = "line-" + s.id;
+        sumCel.textContent = "₪0";
+        table.appendChild(sumCel);
+      }
+
+      function updateStemSum(s) {
+        const el = document.getElementById("line-" + s.id);
+        if (el) el.textContent = "₪" + H.money(stemSum(s.name));
+      }
+
+      function remountExtras() {
+        const keep = 4 + H.STEMS.length * 4;
+        while (table.children.length > keep) table.removeChild(table.lastChild);
+        extras.forEach(function (row, i) { mountExtra(row, i); });
+      }
+
+      function mountExtra(state, i) {
+        const nameCel = document.createElement("div");
+        nameCel.className = "td name";
+        nameCel.style.display = "flex";
+        nameCel.style.alignItems = "center";
+        nameCel.style.gap = "2px";
+        const inp = document.createElement("input");
+        inp.className = "name-in";
+        inp.type = "text";
+        inp.maxLength = 80;
+        inp.placeholder = "שם פריט";
+        inp.value = state.name || "";
+        inp.addEventListener("input", function () { extras[i].name = inp.value; });
+        const rm = document.createElement("button");
+        rm.type = "button";
+        rm.className = "remove-btn";
+        rm.textContent = "×";
+        rm.setAttribute("aria-label", "הסרת הפריט");
+        rm.addEventListener("click", function () {
+          extras.splice(i, 1);
+          remountExtras();
+          renderBar();
+        });
+        nameCel.appendChild(inp);
+        nameCel.appendChild(rm);
+        table.appendChild(nameCel);
+
+        const qtyCel = document.createElement("div");
+        qtyCel.className = "td cell";
+        const qtyEl = document.createElement("div");
+        qtyCel.appendChild(makeStep(state, qtyEl, function () { updateExSum(i); renderBar(); }));
+        table.appendChild(qtyCel);
+
+        const costCel = document.createElement("div");
+        costCel.className = "td cell";
+        const cost = document.createElement("input");
+        cost.className = "cost-in";
+        cost.type = "number";
+        cost.inputMode = "decimal";
+        cost.min = "0";
+        cost.step = "0.01";
+        cost.placeholder = "₪";
+        cost.value = state.cost || "";
+        cost.addEventListener("input", function () {
+          extras[i].cost = cost.value;
+          updateExSum(i);
+          renderBar();
+        });
+        costCel.appendChild(cost);
+        table.appendChild(costCel);
+
+        const sumCel = document.createElement("div");
+        sumCel.className = "td sum";
+        sumCel.id = "exsum-" + i;
+        sumCel.textContent = "₪" + H.money((Number(state.qty)||0)*(Number(state.cost)||0));
+        table.appendChild(sumCel);
+      }
+
+      function updateExSum(i) {
+        const el = document.getElementById("exsum-" + i);
+        const row = extras[i];
+        if (el && row) el.textContent = "₪" + H.money((Number(row.qty)||0)*(Number(row.cost)||0));
+      }
+
       document.getElementById("add-extra").addEventListener("click", function () {
-        extras.push({ name: "", qty: "", cost: "" });
-        renderExtras();
+        extras.push({ name: "", qty: 0, cost: "" });
+        remountExtras();
       });
       document.getElementById("note-total").addEventListener("input", renderBar);
 
@@ -258,7 +357,6 @@
           hint.style.display = "none";
         }
       }
-
       function fields() {
         const n = noteTotal();
         const g = grand();
@@ -323,6 +421,10 @@
           .finally(function () { btn.disabled = false; btn.textContent = "שליחת הדיווח"; });
       });
       document.getElementById("again").addEventListener("click", function () { location.reload(); });
+
+      table.innerHTML = "";
+      addHead();
+      H.STEMS.forEach(mountStem);
       renderBar();
     })();
 

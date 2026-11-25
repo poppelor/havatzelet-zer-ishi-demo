@@ -9,37 +9,32 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <style>.wrap { padding-bottom: calc(200px + var(--safe-bottom)); }</style>
+  <style>.wrap { padding-bottom: calc(150px + var(--safe-bottom)); }</style>
 </head>
 <body>
   <div class="wrap" id="form-view">
     <header class="top">
       <p class="nav-home"><a href="./">כל הטפסים</a></p>
-      <p class="brand">משתלת חבצלת</p>
       <h1>דוח זרים שהוכנו היום</h1>
-      <span class="badge">דמו · שמות ומחירים לדוגמה</span>
+      <p class="subhead">דמו · שמות לדוגמה</p>
     </header>
-    <div class="banner">שמות הזרים כאן הם שמות לדוגמה בלבד, עד שיוחלט על הקטלוג הקבוע.</div>
     
-    <div class="card">
-      <div class="label">זרים שהוכנו <span class="hint">שמות לדוגמה</span></div>
+    <div class="card table-card">
       <div id="bouquet-list"></div>
     </div>
-    
-    <div class="card">
-      <label class="label" for="notes">הערות <span class="hint">לא חובה</span></label>
-      <textarea id="notes" placeholder="משהו חשוב לציין"></textarea>
+    <div class="card compact">
+      <label class="label" for="notes">הערות</label>
+      <textarea id="notes" placeholder="לא חובה"></textarea>
     </div>
-
     
     <div class="card compact">
       <div class="meta">
         <div>
-          <label class="label" for="date" style="font-size:13px;margin-bottom:6px">תאריך</label>
+          <label class="label" for="date">תאריך</label>
           <input id="date" type="date" required />
         </div>
         <div>
-          <div class="label" id="who-label" style="font-size:13px;margin-bottom:6px">מי ממלאת</div>
+          <div class="label" id="who-label">מי ממלאת</div>
           <div class="who" role="group" aria-labelledby="who-label">
             <button type="button" data-who="אורלי" aria-pressed="false">אורלי</button>
             <button type="button" data-who="עומר" aria-pressed="false">עומר</button>
@@ -59,9 +54,8 @@
   </div>
   <div class="wrap success" id="success-view">
     <header class="top">
-      <p class="brand">משתלת חבצלת</p>
-      <span class="badge">דמו · שמות ומחירים לדוגמה</span>
       <h1 id="success-title">הדיווח מוכן</h1>
+      <p class="subhead">דמו · שמות ומחירים לדוגמה</p>
     </header>
     <div class="card"><ul class="summary" id="summary"></ul></div>
     <p class="note-limit" id="save-note"></p>
@@ -78,7 +72,6 @@
       document.getElementById("date").value = H.todayISO();
       H.bindWho(function () { return who; }, function (v) { who = v; });
       H.renderBouquetSteppers(document.getElementById("bouquet-list"), qty, { onChange: renderBar });
-
       function total() {
         return Object.keys(qty).reduce(function (s, k) { return s + qty[k]; }, 0);
       }

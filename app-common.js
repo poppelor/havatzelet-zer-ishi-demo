@@ -64,69 +64,72 @@
   function renderBouquetSteppers(container, qty, options) {
     options = options || {};
     container.innerHTML = "";
+    container.classList.add("grid-bq");
+    const head = ["", "קטן", "בינוני", "גדול"];
+    head.forEach(function (t, i) {
+      const el = document.createElement("div");
+      el.className = "th" + (i === 0 ? " name" : "");
+      el.textContent = t;
+      container.appendChild(el);
+    });
     BOUQUETS.forEach(function (b) {
-      const wrap = document.createElement("div");
-      wrap.className = "bouquet";
-      const title = document.createElement("div");
-      title.className = "bouquet-name";
-      title.textContent = b.name;
-      const hint = document.createElement("div");
-      hint.className = "hint";
-      hint.textContent = "שם לדוגמה";
-      wrap.appendChild(title);
-      wrap.appendChild(hint);
+      const name = document.createElement("div");
+      name.className = "td name";
+      name.textContent = b.name;
+      container.appendChild(name);
       SIZES.forEach(function (s) {
         const key = bouquetKey(b, s);
-        const row = document.createElement("div");
-        row.className = "size-row";
-        row.setAttribute("data-key", key);
-        const left = document.createElement("div");
-        const name = document.createElement("div");
-        name.className = "size-name";
-        name.textContent = s.name;
-        left.appendChild(name);
-        if (options.showPrices) {
-          const price = document.createElement("div");
-          price.className = "size-price";
-          price.textContent = "₪" + b.costs[s.id] + " · מחיר לדוגמה";
-          left.appendChild(price);
-        }
+        const cell = document.createElement("div");
+        cell.className = "td cell size-row";
+        cell.setAttribute("data-key", key);
+        cell.setAttribute("data-bouquet", b.id);
+        cell.setAttribute("data-size", s.id);
         const stepper = makeStepper(qty[key], function (next) {
           qty[key] = next;
           if (options.onChange) options.onChange();
         }, "הוספת " + b.name + " " + s.name, "הורדת " + b.name + " " + s.name);
-        row.appendChild(left);
-        row.appendChild(stepper);
-        wrap.appendChild(row);
+        cell.appendChild(stepper);
+        container.appendChild(cell);
       });
-      container.appendChild(wrap);
     });
   }
 
   function renderStemSteppers(container, qty, options) {
     options = options || {};
     container.innerHTML = "";
+    container.classList.add("grid-stem");
+    ["", "כמות", options.showPrices ? "עלות" : ""].forEach(function (t, i) {
+      const el = document.createElement("div");
+      el.className = "th" + (i === 0 ? " name" : "") + (i === 2 ? " sum" : "");
+      el.textContent = t;
+      container.appendChild(el);
+    });
     STEMS.forEach(function (s) {
-      const row = document.createElement("div");
-      row.className = "stem";
-      const left = document.createElement("div");
       const name = document.createElement("div");
-      name.className = "stem-name";
+      name.className = "td name stem";
+      name.setAttribute("data-stem", s.id);
       name.textContent = s.name;
-      left.appendChild(name);
-      if (options.showPrices) {
-        const price = document.createElement("div");
-        price.className = "stem-price";
-        price.textContent = "₪" + s.price + " לענף · מחיר לדוגמה";
-        left.appendChild(price);
+      container.appendChild(name);
+      const cell = document.createElement("div");
+      cell.className = "td cell stem";
+      cell.setAttribute("data-stem", s.id);
+      cell.setAttribute("data-key", s.name);
+      const sum = document.createElement("div");
+      sum.className = "td sum";
+      sum.setAttribute("data-stem-cost", s.id);
+      function paintCost() {
+        if (!options.showPrices) { sum.textContent = ""; return; }
+        sum.textContent = "₪" + money((qty[s.name] || 0) * s.price);
       }
+      paintCost();
       const stepper = makeStepper(qty[s.name], function (next) {
         qty[s.name] = next;
+        paintCost();
         if (options.onChange) options.onChange();
       }, "הוספת " + s.name, "הורדת " + s.name);
-      row.appendChild(left);
-      row.appendChild(stepper);
-      container.appendChild(row);
+      cell.appendChild(stepper);
+      container.appendChild(cell);
+      container.appendChild(sum);
     });
   }
 
