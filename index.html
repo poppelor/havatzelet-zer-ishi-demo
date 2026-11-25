@@ -613,7 +613,7 @@
         errorEl.style.display = "none";
         // A public page cannot write to a private Google Sheet by itself.
         // When an Apps Script web app URL is added below, submissions will be posted there.
-        const ENDPOINT = "";
+        const ENDPOINT = "https://script.google.com/macros/s/AKfycbx_rw-0YHxxMUjzj9jWMwgHt2yuS_n0qVqTIUBeFQWG_nuCkBcdkqJCp2GbyLt1gjA/exec";
         if (!ENDPOINT) {
           showSuccess(data, false);
           return;
