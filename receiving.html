@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>קבלת סחורה | משתלת חבצלת</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>.wrap { padding-bottom: calc(250px + var(--safe-bottom)); }</style>
+</head>
+<body>
+  <div class="wrap" id="form-view">
+    <header class="top">
+      <p class="nav-home"><a href="./">כל הטפסים</a></p>
+      <p class="brand">משתלת חבצלת</p>
+      <h1>קבלת סחורה</h1>
+      <span class="badge">דמו · שמות ומחירים לדוגמה</span>
+    </header>
+    <div class="banner">שמות הפריטים הם לדוגמה. העלויות הן בש״ח לפני מע״מ, לפי מה שממלאים מהתעודה.</div>
+    
+    <div class="card">
+      <div class="label" id="supplier-label">ספק</div>
+      <div class="chips" role="group" aria-labelledby="supplier-label">
+        <button type="button" class="chip" data-supplier="פרחי כרמי" aria-pressed="true">פרחי כרמי</button>
+        <button type="button" class="chip" data-supplier="other" aria-pressed="false">אחר</button>
+      </div>
+      <div id="supplier-other-wrap" style="display:none;margin-top:10px">
+        <label class="label" for="supplier-other">שם הספק</label>
+        <input id="supplier-other" type="text" maxlength="80" />
+      </div>
+    </div>
+    <div class="card">
+      <label class="label" for="note-number">מספר תעודת משלוח</label>
+      <input id="note-number" type="text" inputmode="text" placeholder="מספר התעודה" />
+    </div>
+    <div class="card">
+      <div class="label">מה הגיע <span class="hint">שמות לדוגמה · עלות יחידה בש״ח, לפני מע״מ</span></div>
+      <div id="stem-lines"></div>
+    </div>
+    <div class="card">
+      <div class="label">פריטים נוספים</div>
+      <div id="extra-lines"></div>
+      <button type="button" class="add-btn" id="add-extra">הוספת פריט חדש</button>
+    </div>
+    <div class="card">
+      <label class="label" for="note-total">סה״כ בתעודת המשלוח (₪, לפני מע״מ)</label>
+      <input id="note-total" type="number" inputmode="decimal" min="0" step="0.01" />
+      <p class="hint" id="mismatch-hint" style="margin-top:8px;display:none"></p>
+    </div>
+    <div class="card">
+      <label class="check-row">
+        <input type="checkbox" id="matches" />
+        <span>התעודה תואמת למה שספרתי</span>
+      </label>
+      <div id="mismatch-notes-wrap" style="margin-top:12px">
+        <label class="label" for="mismatch-notes">הערות אם יש אי-התאמה</label>
+        <textarea id="mismatch-notes" placeholder="מה לא תאם לתעודה"></textarea>
+      </div>
+    </div>
+    <div class="card">
+      <div class="label">צילום התעודה <span class="hint">לא חובה</span></div>
+      <label class="photo-box" for="photo">הוספת צילום מהטלפון
+        <input id="photo" type="file" accept="image/*" />
+      </label>
+      <img id="preview" class="photo-preview" alt="תצוגה מקדימה של התעודה" />
+      <div id="photo-actions" style="display:none">
+        <button type="button" class="remove-btn" id="remove-photo">הסרת הצילום</button>
+      </div>
+    </div>
+    
+    <div class="card">
+      <label class="label" for="notes">הערות <span class="hint">לא חובה</span></label>
+      <textarea id="notes" placeholder="משהו חשוב לציין"></textarea>
+    </div>
+
+    
+    <div class="card compact">
+      <div class="meta">
+        <div>
+          <label class="label" for="date" style="font-size:13px;margin-bottom:6px">תאריך</label>
+          <input id="date" type="date" required />
+        </div>
+        <div>
+          <div class="label" id="who-label" style="font-size:13px;margin-bottom:6px">מי ממלאת</div>
+          <div class="who" role="group" aria-labelledby="who-label">
+            <button type="button" data-who="אורלי" aria-pressed="false">אורלי</button>
+            <button type="button" data-who="עומר" aria-pressed="false">עומר</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <p class="error" id="error" role="alert"></p>
+  </div>
+  <div class="dock" id="dock">
+    <div class="dock-inner">
+      <p class="sub" id="sub">סה״כ בתעודה: לא מולא</p><div class="sticker" id="sticker" aria-live="polite">סה״כ מחושב: ₪0</div>
+      <button type="button" class="submit" id="submit">שליחת הדיווח</button>
+    </div>
+  </div>
+  <div class="wrap success" id="success-view">
+    <header class="top">
+      <p class="brand">משתלת חבצלת</p>
+      <span class="badge">דמו · שמות ומחירים לדוגמה</span>
+      <h1 id="success-title">הדיווח מוכן</h1>
+    </header>
+    <div class="card"><ul class="summary" id="summary"></ul></div>
+    <p class="note-limit" id="save-note"></p>
+    <button type="button" class="again" id="again">דיווח נוסף</button>
+    <a class="home-btn" href="./">חזרה לכל הטפסים</a>
+  </div>
+  <script src="app-common.js"></script>
+  <script>
+  
+    (function () {
+      const H = Havatzelet;
+      let who = "";
+      let supplier = "פרחי כרמי";
+      let photo = { name: "", dataUrl: "" };
+      const lines = {};
+      H.STEMS.forEach(function (s) { lines[s.name] = { qty: 0, cost: "" }; });
+      let extras = [];
+
+      document.getElementById("date").value = H.todayISO();
+      H.bindWho(function () { return who; }, function (v) { who = v; });
+      H.bindPhoto("photo", "preview", "photo-actions", "remove-photo", function (p) { photo = p; });
+
+      document.querySelectorAll("[data-supplier]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          supplier = btn.getAttribute("data-supplier");
+          document.querySelectorAll("[data-supplier]").forEach(function (b) {
+            b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+          });
+          document.getElementById("supplier-other-wrap").style.display = supplier === "other" ? "block" : "none";
+          H.hideError();
+          renderBar();
+        });
+      });
+
+      const stemBox = document.getElementById("stem-lines");
+      H.STEMS.forEach(function (s) {
+        const card = document.createElement("div");
+        card.className = "extra-row";
+        card.style.borderTop = stemBox.children.length ? "1px solid var(--line)" : "0";
+        card.innerHTML = '<div class="stem-name">' + s.name + '</div>' +
+          '<div class="line-grid">' +
+          '<div><label class="label" for="qty-' + s.id + '">כמות שהגיעה</label><input id="qty-' + s.id + '" type="number" inputmode="numeric" min="0" step="1" value="" /></div>' +
+          '<div><label class="label" for="cost-' + s.id + '">עלות יחידה</label><input id="cost-' + s.id + '" type="number" inputmode="decimal" min="0" step="0.01" placeholder="₪ לפני מע״מ" /></div>' +
+          '</div><div class="line-total" id="line-' + s.id + '">סכום: ₪0</div>';
+        stemBox.appendChild(card);
+        function upd() {
+          lines[s.name].qty = Number(document.getElementById("qty-" + s.id).value) || 0;
+          lines[s.name].cost = document.getElementById("cost-" + s.id).value;
+          const sum = lines[s.name].qty * (Number(lines[s.name].cost) || 0);
+          document.getElementById("line-" + s.id).textContent = "סכום: ₪" + H.money(sum);
+          renderBar();
+        }
+        document.getElementById("qty-" + s.id).addEventListener("input", upd);
+        document.getElementById("cost-" + s.id).addEventListener("input", upd);
+      });
+
+      function renderExtras() {
+        const box = document.getElementById("extra-lines");
+        box.innerHTML = "";
+        extras.forEach(function (row, i) {
+          const el = document.createElement("div");
+          el.className = "extra-row";
+          el.innerHTML = '<label class="label">שם הפריט</label><input type="text" data-ex="name" maxlength="80" />' +
+            '<div class="line-grid">' +
+            '<div><label class="label">כמות</label><input type="number" data-ex="qty" inputmode="numeric" min="0" step="1" /></div>' +
+            '<div><label class="label">עלות יחידה</label><input type="number" data-ex="cost" inputmode="decimal" min="0" step="0.01" placeholder="₪ לפני מע״מ" /></div>' +
+            '</div><div class="line-total">סכום: ₪' + H.money((Number(row.qty)||0)*(Number(row.cost)||0)) + '</div>' +
+            '<button type="button" class="remove-btn">הסרת הפריט</button>';
+          const nameI = el.querySelector('[data-ex="name"]');
+          const qtyI = el.querySelector('[data-ex="qty"]');
+          const costI = el.querySelector('[data-ex="cost"]');
+          nameI.value = row.name; qtyI.value = row.qty; costI.value = row.cost;
+          function upd() {
+            extras[i] = { name: nameI.value, qty: qtyI.value, cost: costI.value };
+            renderBar();
+            el.querySelector(".line-total").textContent = "סכום: ₪" + H.money((Number(qtyI.value)||0)*(Number(costI.value)||0));
+          }
+          nameI.addEventListener("input", upd);
+          qtyI.addEventListener("input", upd);
+          costI.addEventListener("input", upd);
+          el.querySelector(".remove-btn").addEventListener("click", function () {
+            extras.splice(i, 1);
+            renderExtras();
+            renderBar();
+          });
+          box.appendChild(el);
+        });
+      }
+
+      document.getElementById("add-extra").addEventListener("click", function () {
+        extras.push({ name: "", qty: "", cost: "" });
+        renderExtras();
+      });
+      document.getElementById("note-total").addEventListener("input", renderBar);
+
+      function supplierName() {
+        if (supplier === "other") return document.getElementById("supplier-other").value.trim();
+        return supplier;
+      }
+      function extraSum() {
+        return extras.reduce(function (s, r) { return s + (Number(r.qty)||0) * (Number(r.cost)||0); }, 0);
+      }
+      function stemSum(name) {
+        return (lines[name].qty || 0) * (Number(lines[name].cost) || 0);
+      }
+      function grand() {
+        return H.STEMS.reduce(function (s, st) { return s + stemSum(st.name); }, 0) + extraSum();
+      }
+      function noteTotal() {
+        const v = document.getElementById("note-total").value;
+        if (v === "") return null;
+        return Number(v);
+      }
+      function mismatch() {
+        const n = noteTotal();
+        if (n === null || Number.isNaN(n)) return false;
+        return Math.round(n * 100) !== Math.round(grand() * 100);
+      }
+      function extraText() {
+        return extras.filter(function (r) { return r.name || r.qty || r.cost; }).map(function (r) {
+          const q = Number(r.qty)||0, c = Number(r.cost)||0;
+          return (r.name || "פריט") + " · " + q + " × ₪" + H.money(c) + " = ₪" + H.money(q*c);
+        }).join(" ; ");
+      }
+      function hasQty() {
+        const stemQty = H.STEMS.some(function (s) { return lines[s.name].qty > 0; });
+        const exQty = extras.some(function (r) { return (Number(r.qty)||0) > 0; });
+        return stemQty || exQty;
+      }
+      function renderBar() {
+        document.getElementById("sticker").textContent = "סה״כ מחושב: ₪" + H.money(grand());
+        const sub = document.getElementById("sub");
+        const hint = document.getElementById("mismatch-hint");
+        const n = noteTotal();
+        if (n === null || Number.isNaN(n)) {
+          sub.textContent = "סה״כ בתעודה: לא מולא";
+          sub.className = "sub";
+          hint.style.display = "none";
+        } else if (mismatch()) {
+          const diff = grand() - n;
+          const sign = diff > 0 ? "+" : "";
+          sub.textContent = "לא תואם לתעודה · הפרש " + sign + "₪" + H.money(diff);
+          sub.className = "sub warn";
+          hint.style.display = "block";
+          hint.textContent = "הסכום שחושב (₪" + H.money(grand()) + ") שונה מהסכום בתעודה (₪" + H.money(n) + ").";
+        } else {
+          sub.textContent = "תואם לתעודה: ₪" + H.money(n);
+          sub.className = "sub";
+          hint.style.display = "none";
+        }
+      }
+
+      function fields() {
+        const n = noteTotal();
+        const g = grand();
+        const diff = (n === null || Number.isNaN(n)) ? "" : Math.round((g - n) * 100) / 100;
+        const f = {
+          "תאריך": document.getElementById("date").value,
+          "מי מילא": who,
+          "ספק": supplierName(),
+          "מספר תעודת משלוח": document.getElementById("note-number").value.trim(),
+          "פריטים נוספים": extraText(),
+          "סה\"כ מחושב": g,
+          "סה\"כ בתעודה": (n === null || Number.isNaN(n)) ? "" : n,
+          "הפרש": diff,
+          "התעודה תואמת": document.getElementById("matches").checked ? "כן" : "לא",
+          "הערות אי-התאמה": document.getElementById("mismatch-notes").value.trim(),
+          "הערות": document.getElementById("notes").value.trim(),
+          "צילום": photo.name || (photo.dataUrl ? "צילום" : "")
+        };
+        H.STEMS.forEach(function (s) {
+          f[s.name + " - כמות"] = lines[s.name].qty;
+          f[s.name + " - עלות יחידה"] = lines[s.name].cost === "" ? "" : Number(lines[s.name].cost);
+          f[s.name + " - סכום"] = stemSum(s.name);
+        });
+        return f;
+      }
+      function summaryLines() {
+        const out = [
+          ["תאריך", document.getElementById("date").value],
+          ["מי מילאה", who],
+          ["ספק", supplierName()],
+          ["מספר תעודה", document.getElementById("note-number").value.trim()]
+        ];
+        H.STEMS.forEach(function (s) {
+          if (lines[s.name].qty) out.push([s.name, lines[s.name].qty + " × ₪" + H.money(Number(lines[s.name].cost)||0)]);
+        });
+        if (extraText()) out.push(["פריטים נוספים", extraText()]);
+        out.push(["סה״כ מחושב", "₪" + H.money(grand())]);
+        const n = noteTotal();
+        if (n !== null && !Number.isNaN(n)) out.push(["סה״כ בתעודה", "₪" + H.money(n)]);
+        out.push(["התעודה תואמת", document.getElementById("matches").checked ? "כן" : "לא"]);
+        const mm = document.getElementById("mismatch-notes").value.trim();
+        if (mm) out.push(["הערות אי-התאמה", mm]);
+        const notes = document.getElementById("notes").value.trim();
+        if (notes) out.push(["הערות", notes]);
+        if (photo.name || photo.dataUrl) out.push(["צילום", "צורף"]);
+        return out;
+      }
+
+      document.getElementById("submit").addEventListener("click", function () {
+        if (!who) return H.showError("צריך לבחור מי ממלאת: אורלי או עומר.");
+        if (!supplierName()) return H.showError("צריך למלא את שם הספק.");
+        if (!hasQty()) return H.showError("צריך למלא כמות לפחות לפריט אחד.");
+        if (mismatch() && !document.getElementById("matches").checked && !document.getElementById("mismatch-notes").value.trim()) {
+          return H.showError("הסכומים לא תואמים. צריך לסמן שהתעודה תואמת, או לכתוב מה לא תאם.");
+        }
+        H.hideError();
+        const btn = document.getElementById("submit");
+        btn.disabled = true; btn.textContent = "שולחת…";
+        H.submit("receiving", fields(), photo)
+          .then(function () { H.showSuccess(summaryLines(), true); })
+          .catch(function () { H.showError("השליחה לגיליון לא הצליחה. אם זו הפעם הראשונה לטופס הזה, צריך לפרוס מחדש את הסקריפט."); })
+          .finally(function () { btn.disabled = false; btn.textContent = "שליחת הדיווח"; });
+      });
+      document.getElementById("again").addEventListener("click", function () { location.reload(); });
+      renderBar();
+    })();
+
+  </script>
+</body>
+</html>

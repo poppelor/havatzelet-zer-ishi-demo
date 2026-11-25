@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>דוח בלאי | משתלת חבצלת</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>.wrap { padding-bottom: calc(230px + var(--safe-bottom)); }</style>
+</head>
+<body>
+  <div class="wrap" id="form-view">
+    <header class="top">
+      <p class="nav-home"><a href="./">כל הטפסים</a></p>
+      <p class="brand">משתלת חבצלת</p>
+      <h1>דוח בלאי</h1>
+      <span class="badge">דמו · שמות ומחירים לדוגמה</span>
+    </header>
+    <div class="banner">השמות והמחירים הם לדוגמה. העלות המשוערת מחושבת לפי מחירי הדוגמה בטופס, לא לפי מחירי ספק אמיתיים.</div>
+    
+    <div class="card">
+      <div class="label">זרים מהקטלוג <span class="hint">שמות ומחירים לדוגמה</span></div>
+      <div id="bouquet-list"></div>
+    </div>
+    <div class="card">
+      <div class="label">ענפים בודדים <span class="hint">מחירים לדוגמה</span></div>
+      <div id="stem-list"></div>
+    </div>
+    <div class="card">
+      <div class="label" id="reason-label">סיבת הבלאי</div>
+      <div class="chips" role="group" aria-labelledby="reason-label">
+        <button type="button" class="chip reason-chip" data-reason="נבל" aria-pressed="false">נבל</button>
+        <button type="button" class="chip reason-chip" data-reason="נשבר" aria-pressed="false">נשבר</button>
+        <button type="button" class="chip reason-chip" data-reason="לא נמכר בזמן" aria-pressed="false">לא נמכר בזמן</button>
+        <button type="button" class="chip reason-chip" data-reason="אחר" aria-pressed="false">אחר</button>
+      </div>
+      <div id="reason-other-wrap" style="display:none;margin-top:10px">
+        <label class="label" for="reason-other">פירוט</label>
+        <input id="reason-other" type="text" maxlength="120" placeholder="מה הסיבה" />
+      </div>
+    </div>
+    <div class="card">
+      <div class="label">צילום <span class="hint">לא חובה</span></div>
+      <label class="photo-box" for="photo">הוספת צילום מהטלפון
+        <input id="photo" type="file" accept="image/*" />
+      </label>
+      <img id="preview" class="photo-preview" alt="תצוגה מקדימה" />
+      <div id="photo-actions" style="display:none">
+        <button type="button" class="remove-btn" id="remove-photo">הסרת הצילום</button>
+      </div>
+    </div>
+    
+    <div class="card">
+      <label class="label" for="notes">הערות <span class="hint">לא חובה</span></label>
+      <textarea id="notes" placeholder="משהו חשוב לציין"></textarea>
+    </div>
+
+    
+    <div class="card compact">
+      <div class="meta">
+        <div>
+          <label class="label" for="date" style="font-size:13px;margin-bottom:6px">תאריך</label>
+          <input id="date" type="date" required />
+        </div>
+        <div>
+          <div class="label" id="who-label" style="font-size:13px;margin-bottom:6px">מי ממלאת</div>
+          <div class="who" role="group" aria-labelledby="who-label">
+            <button type="button" data-who="אורלי" aria-pressed="false">אורלי</button>
+            <button type="button" data-who="עומר" aria-pressed="false">עומר</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <p class="error" id="error" role="alert"></p>
+  </div>
+  <div class="dock" id="dock">
+    <div class="dock-inner">
+      <p class="sub" id="sub">זרים: 0 · ענפים: 0 · מחירים לדוגמה</p><div class="sticker" id="sticker" aria-live="polite">עלות משוערת: ₪0</div>
+      <button type="button" class="submit" id="submit">שליחת הדיווח</button>
+    </div>
+  </div>
+  <div class="wrap success" id="success-view">
+    <header class="top">
+      <p class="brand">משתלת חבצלת</p>
+      <span class="badge">דמו · שמות ומחירים לדוגמה</span>
+      <h1 id="success-title">הדיווח מוכן</h1>
+    </header>
+    <div class="card"><ul class="summary" id="summary"></ul></div>
+    <p class="note-limit" id="save-note"></p>
+    <button type="button" class="again" id="again">דיווח נוסף</button>
+    <a class="home-btn" href="./">חזרה לכל הטפסים</a>
+  </div>
+  <script src="app-common.js"></script>
+  <script>
+  
+    (function () {
+      const H = Havatzelet;
+      const bqty = H.emptyBouquetQty();
+      const sqty = H.emptyStemQty();
+      let who = "";
+      let reason = "";
+      let photo = { name: "", dataUrl: "" };
+      document.getElementById("date").value = H.todayISO();
+      H.bindWho(function () { return who; }, function (v) { who = v; });
+      H.bindPhoto("photo", "preview", "photo-actions", "remove-photo", function (p) { photo = p; });
+      H.renderBouquetSteppers(document.getElementById("bouquet-list"), bqty, { showPrices: true, onChange: renderBar });
+      H.renderStemSteppers(document.getElementById("stem-list"), sqty, { showPrices: true, onChange: renderBar });
+
+      document.querySelectorAll(".reason-chip").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          reason = btn.getAttribute("data-reason") || "";
+          document.querySelectorAll(".reason-chip").forEach(function (b) {
+            b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+          });
+          document.getElementById("reason-other-wrap").style.display = reason === "אחר" ? "block" : "none";
+          H.hideError();
+        });
+      });
+
+      function bouquetCost() {
+        let sum = 0;
+        H.BOUQUETS.forEach(function (b) {
+          H.SIZES.forEach(function (s) {
+            sum += (bqty[H.bouquetKey(b, s)] || 0) * b.costs[s.id];
+          });
+        });
+        return sum;
+      }
+      function stemCost() {
+        return H.STEMS.reduce(function (s, st) { return s + (sqty[st.name] || 0) * st.price; }, 0);
+      }
+      function est() { return bouquetCost() + stemCost(); }
+      function count() {
+        const b = Object.keys(bqty).reduce(function (s, k) { return s + bqty[k]; }, 0);
+        const t = Object.keys(sqty).reduce(function (s, k) { return s + sqty[k]; }, 0);
+        return { bouquets: b, stems: t };
+      }
+      function reasonText() {
+        if (reason === "אחר") return document.getElementById("reason-other").value.trim();
+        return reason;
+      }
+      function renderBar() {
+        const c = count();
+        document.getElementById("sub").textContent =
+          "זרים: " + c.bouquets + " · ענפים: " + c.stems + " · מחירים לדוגמה";
+        document.getElementById("sticker").textContent = "עלות משוערת: ₪" + H.money(est());
+      }
+      function fields() {
+        const f = {
+          "תאריך": document.getElementById("date").value,
+          "מי מילא": who,
+          "סיבה": reason,
+          "פירוט סיבה": reason === "אחר" ? document.getElementById("reason-other").value.trim() : "",
+          "עלות משוערת": est(),
+          "הערות": document.getElementById("notes").value.trim(),
+          "צילום": photo.name || (photo.dataUrl ? "צילום" : "")
+        };
+        Object.keys(bqty).forEach(function (k) { f[k] = bqty[k]; });
+        Object.keys(sqty).forEach(function (k) { f[k] = sqty[k]; });
+        return f;
+      }
+      function lines() {
+        const out = [["תאריך", document.getElementById("date").value], ["מי מילאה", who]];
+        Object.keys(bqty).forEach(function (k) { if (bqty[k]) out.push([k, String(bqty[k])]); });
+        Object.keys(sqty).forEach(function (k) { if (sqty[k]) out.push([k, String(sqty[k])]); });
+        out.push(["סיבה", reason === "אחר" ? reasonText() : reason]);
+        out.push(["עלות משוערת", "₪" + H.money(est()) + " · לדוגמה"]);
+        const notes = document.getElementById("notes").value.trim();
+        if (notes) out.push(["הערות", notes]);
+        if (photo.name || photo.dataUrl) out.push(["צילום", "צורף"]);
+        return out;
+      }
+      document.getElementById("submit").addEventListener("click", function () {
+        if (!who) return H.showError("צריך לבחור מי ממלאת: אורלי או עומר.");
+        const c = count();
+        if (c.bouquets + c.stems === 0) return H.showError("צריך לבחור לפחות זר או ענף אחד.");
+        if (!reason) return H.showError("צריך לבחור סיבת בלאי.");
+        if (reason === "אחר" && !document.getElementById("reason-other").value.trim()) {
+          return H.showError("צריך לכתוב את סיבת הבלאי.");
+        }
+        H.hideError();
+        const btn = document.getElementById("submit");
+        btn.disabled = true; btn.textContent = "שולחת…";
+        H.submit("waste", fields(), photo)
+          .then(function () { H.showSuccess(lines(), true); })
+          .catch(function () { H.showError("השליחה לגיליון לא הצליחה. אם זו הפעם הראשונה לטופס הזה, צריך לפרוס מחדש את הסקריפט."); })
+          .finally(function () { btn.disabled = false; btn.textContent = "שליחת הדיווח"; });
+      });
+      document.getElementById("again").addEventListener("click", function () { location.reload(); });
+      renderBar();
+    })();
+
+  </script>
+</body>
+</html>
