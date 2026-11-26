@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תמונות לפי סוג זר – משתלת חבצלת</title>
+<style>
+@font-face{font-family:Mikhmoret;src:url("assets/mikhmoret-ultralight.woff2") format("woff2");font-weight:200;font-style:normal;font-display:swap;}
+@font-face{font-family:Mikhmoret;src:url("assets/mikhmoret-light.woff2") format("woff2");font-weight:300;font-style:normal;font-display:swap;}
+@font-face{font-family:Mikhmoret;src:url("assets/mikhmoret-regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:Mikhmoret;src:url("assets/mikhmoret-bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap;}
+@font-face{font-family:Assistant;src:url("assets/assistant-variable.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap;}
+:root{
+  --plum:#6E4B5D;--forest:#2F483E;--peach:#F69A76;--cream:#FFF6E6;
+  --sage:#A8B79E;--blush:#E7B6C4;--body:rgba(110,75,93,.88);
+  --muted:rgba(110,75,93,.68);--rule:rgba(110,75,93,.16);
+  --paper:#fffbf6;--peach-soft:#fde8de;--sage-soft:#eef3ea;
+  --blush-soft:#f8eef2;--forest-soft:#e7eee9;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--cream);color:var(--plum);
+  font-family:Assistant, Mikhmoret, "Segoe UI", Tahoma, sans-serif;
+  font-size:15px;line-height:1.45;text-align:right;direction:rtl;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+a{color:var(--forest);}
+a:hover{color:var(--plum);}
+[dir="ltr"]{unicode-bidi:isolate;direction:ltr;}
+span[dir="ltr"],.num{unicode-bidi:isolate;direction:ltr;display:inline-block;}
+.page{max-width:920px;margin:0 auto;padding:0 1rem 2.5rem;}
+
+.cover-page{padding:1.4rem 0 1.2rem;}
+.cover{text-align:center;}
+.cover .logo{display:block;width:86px;height:auto;margin:0 auto .7rem;}
+.cover .kicker{margin:0 0 .25rem;color:var(--peach);font-weight:700;font-size:.86rem;}
+.cover h1{
+  margin:0 0 .5rem;font-size:1.85rem;line-height:1.2;font-weight:700;
+  color:var(--forest);font-family:Mikhmoret, Assistant, sans-serif;
+}
+.cover .lede{margin:0 auto .45rem;max-width:38rem;color:var(--body);font-size:.98rem;}
+.cover .meta{margin:0;color:var(--muted);font-size:.86rem;}
+.stats{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem;margin:.7rem 0 0;}
+.stat{background:var(--forest-soft);color:var(--forest);border-radius:999px;padding:.28rem .7rem;font-weight:700;font-size:.8rem;}
+.how{margin:1rem 0 .8rem;background:var(--paper);border:1px solid var(--rule);border-radius:14px;padding:.7rem .9rem;}
+.how p{margin:0 0 .35rem;color:var(--body);font-size:.9rem;}
+.how p:last-child{margin:0;}
+.legend{display:flex;flex-wrap:wrap;gap:.55rem 1rem;align-items:center;margin:.15rem 0 0;font-size:.84rem;color:var(--body);}
+.hint{margin:.35rem 0 0;color:var(--muted);font-size:.86rem;}
+.toc{margin:.2rem 0 0;}
+.toc h2{margin:0 0 .45rem;color:var(--forest);font-size:1.15rem;font-family:Mikhmoret, Assistant, sans-serif;}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(9,auto);column-gap:1.6rem;align-content:start;}
+.toc li{display:flex;justify-content:space-between;gap:.5rem;padding:.22rem 0;border-bottom:1px solid var(--rule);align-items:baseline;}
+.toc li a{color:var(--plum);text-decoration:none;font-weight:700;font-size:.88rem;}
+.toc li a:hover{color:var(--forest);}
+.toc .n{color:var(--muted);font-size:.78rem;white-space:nowrap;}
+
+.type-page{padding-top:1.1rem;margin-top:.4rem;}
+.type-head{padding:0 0 .45rem;border-bottom:2px solid var(--sage);margin:0 0 .5rem;}
+.type-head .brandline{display:flex;align-items:center;gap:.55rem;margin:0 0 .15rem;}
+.type-head .logo-s{width:28px;height:auto;flex:0 0 auto;}
+.type-head h2{
+  margin:0;color:var(--forest);font-size:1.42rem;line-height:1.2;font-weight:700;
+  font-family:Mikhmoret, Assistant, sans-serif;flex:1;
+}
+.define{margin:0;color:var(--body);font-size:.86rem;line-height:1.35;}
+.meta-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.35rem .8rem;margin:.28rem 0 0;}
+.prange{margin:0;color:var(--forest);font-weight:800;font-size:1rem;}
+.count{color:var(--muted);font-size:.8rem;font-weight:700;}
+.legend-mini{display:flex;flex-wrap:wrap;gap:.15rem .7rem;font-size:.72rem;color:var(--muted);}
+.legend-mini .pair{display:inline-flex;align-items:center;gap:.22rem;}
+
+.grid{display:grid;gap:6px;margin:0;}
+.grid.c4{grid-template-columns:repeat(4,1fr);}
+.grid.c5{grid-template-columns:repeat(5,1fr);}
+.grid.c6{grid-template-columns:repeat(6,1fr);}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:8px;overflow:hidden;break-inside:avoid;}
+.photo{background:#f3ece3;aspect-ratio:1/1;overflow:hidden;position:relative;}
+.photo img{width:100%;height:100%;object-fit:contain;display:block;background:#f3ece3;}
+.photo .empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--blush-soft);color:var(--plum);font-weight:700;font-size:.72rem;text-align:center;padding:.3rem;}
+.meta{padding:.22rem .28rem .28rem;}
+.shop{margin:0;color:var(--peach);font-weight:700;font-size:.68rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.price{margin:.05rem 0 0;color:var(--forest);font-weight:700;font-size:.68rem;line-height:1.15;}
+a.thumb-link{display:block;color:inherit;text-decoration:none;cursor:zoom-in;}
+a.thumb-link:focus{outline:2px solid var(--peach);outline-offset:1px;}
+
+.mk{display:inline-flex;align-items:center;justify-content:center;width:1.05em;height:1.05em;border-radius:50%;font-weight:800;font-size:9px;line-height:1;font-family:Assistant,sans-serif;}
+.mk-b{background:var(--peach);color:#3a241c;}
+.mk-a{background:var(--sage);color:var(--forest);}
+.marks-card{position:absolute;top:3px;right:3px;display:flex;gap:2px;z-index:1;pointer-events:none;}
+
+.method{padding-top:.8rem;margin-top:1.2rem;}
+.method h2{
+  margin:0 0 .5rem;color:var(--forest);font-size:1.35rem;
+  font-family:Mikhmoret, Assistant, sans-serif;border-top:2px solid var(--sage);padding-top:.5rem;
+}
+.method p,.method li{color:var(--body);font-size:.92rem;}
+.method p{margin:0 0 .5rem;}
+.method ul{margin:0 0 .5rem;padding:0 1.1rem 0 0;}
+.method li{margin:0 0 .35rem;}
+footer.doc{margin:1.2rem 0 0;color:var(--muted);font-size:.78rem;text-align:center;}
+
+@media (max-width:720px){
+  .page{padding:0 .7rem 2rem;}
+  .toc ol{grid-template-columns:1fr;grid-auto-flow:row;grid-template-rows:none;}
+  .grid.c4,.grid.c5,.grid.c6{grid-template-columns:repeat(3,1fr);}
+  .shop,.price{font-size:.72rem;}
+  .cover h1{font-size:1.55rem;}
+  .type-head h2{font-size:1.25rem;}
+}
+@media (max-width:400px){
+  .grid.c4,.grid.c5,.grid.c6{grid-template-columns:repeat(2,1fr);}
+}
+
+@media print{
+  body{background:#fff;font-size:10px;}
+  .page{max-width:none;margin:0;padding:0;}
+  .cover-page{break-after:page;padding:0;}
+  .cover .logo{width:68px;margin-bottom:.45rem;}
+  .cover h1{font-size:22px;}
+  .cover .lede{font-size:10.5px;}
+  .how{padding:.45rem .6rem;margin:.55rem 0 .45rem;border-radius:8px;}
+  .how p{font-size:9.5px;}
+  .toc h2{font-size:13px;}
+  .toc li a{font-size:9.5px;}
+  .toc .n{font-size:8px;}
+  .type-page{break-after:page;break-inside:avoid;padding:0;}
+  .type-head{margin-bottom:4pt;padding-bottom:3pt;}
+  .type-head .logo-s{width:18px;}
+  .type-head h2{font-size:16px;}
+  .define{font-size:8.5px;}
+  .prange{font-size:10.5px;}
+  .count,.legend-mini{font-size:7.5px;}
+  .grid{gap:3.5pt;}
+  .grid.c4,.grid.c5,.grid.c6{grid-template-columns:repeat(var(--cols,4),1fr);}
+  .grid.c4{--cols:4;}
+  .grid.c5{--cols:5;}
+  .grid.c6{--cols:6;}
+  .card{border-radius:4px;}
+  .shop,.price{font-size:7px;}
+  .meta{padding:2pt 2.5pt 2.5pt;}
+  .mk{font-size:6.5px;width:1.15em;height:1.15em;}
+  .method{break-before:page;padding:0;}
+  .method h2{font-size:16px;}
+  .method p,.method li{font-size:9.5px;}
+  footer.doc{font-size:8px;}
+  a.thumb-link{cursor:default;}
+}
+@page{size:A4;margin:8mm 8mm 9mm;}
+</style>
+</head>
+<body>
+<div class="page">
+<section class="cover-page" id="cover">
+  <div class="cover">
+    <img class="logo" src="assets/havatzelet-logo.svg" alt="משתלת חבצלת">
+    <p class="kicker">משתלת חבצלת · אלגים</p>
+    <h1>תמונות לפי סוג זר</h1>
+    <p class="lede">הוכחה ויזואלית: לכל סוג בעשירייה ובניתוח המעמיק צורפה תמונה מכל חנות שנספרה, כדי שאפשר לראות שמדובר באותו <strong>סוג</strong> זר — לא באותו מוצר.</p>
+    <p class="meta">איסוף הנתונים: 25 בנובמבר 2026, שעון ישראל, מ־17 קטלוגים.<br>שליפת התמונות: 26 בנובמבר 2026, מדפי המוצר או מארכיון האינטרנט כשהאתר החי היה חסום.</p>
+    <div class="stats">
+      <span class="stat">17 סוגים</span>
+      <span class="stat">94 זרים שנספרו</span>
+      <span class="stat">91 עם תמונה</span>
+      <span class="stat">3 בלי תמונה</span>
+    </div>
+  </div>
+  <div class="how">
+    <p>שני זרים משתי חנויות אינם אותו זר. הסיווג הוא למחלקת הרכב: אותו פרח ראשי ואותו רעיון צבע. כל דף הוא סוג אחד, עם כל הזרים של אותו סוג.</p>
+    <p class="hint">לחיצה על תמונה פותחת אותה בגודל מלא.</p>
+    <div class="legend">
+      <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי — התמונה לא נראית לגמרי כמו הסוג</span>
+      <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון האינטרנט, 2025 (האתר החי היה חסום)</span>
+    </div>
+  </div>
+  <nav class="toc">
+    <h2>תוכן העניינים</h2>
+    <ol>
+      <li><a href="#red-roses">ורדים אדומים</a><span class="n">10 · <span class="num" dir="ltr">176–269 ₪</span></span></li>
+      <li><a href="#lisianthus">ליזיאנטוס ורוד או פסטל</a><span class="n">8 · <span class="num" dir="ltr">100–400 ₪</span></span></li>
+      <li><a href="#white-shabbat">זר לבן או זר שבת</a><span class="n">4 · <span class="num" dir="ltr">135–250 ₪</span></span></li>
+      <li><a href="#purple">זר סגול</a><span class="n">3 · <span class="num" dir="ltr">147–240 ₪</span></span></li>
+      <li><a href="#colorful-mix">מיקס צבעוני</a><span class="n">28 · <span class="num" dir="ltr">137–620 ₪</span></span></li>
+      <li><a href="#sunflowers">חמניות, חד-מיני או דומיננטי</a><span class="n">2 · <span class="num" dir="ltr">167–400 ₪</span></span></li>
+      <li><a href="#sunflower-mix">מיקס עם חמניות</a><span class="n">6 · <span class="num" dir="ltr">130–259 ₪</span></span></li>
+      <li><a href="#gerberas">קוקטייל גרברות</a><span class="n">1 · <span class="num" dir="ltr">153–170 ₪</span></span></li>
+      <li><a href="#lilies">שושן וליליות</a><span class="n">2 · <span class="num" dir="ltr">179 ₪</span></span></li>
+      <li><a href="#tulips">טוליפים</a><span class="n">9 · <span class="num" dir="ltr">129–430 ₪</span></span></li>
+      <li><a href="#chrysanthemums">חרציות</a><span class="n">7 · <span class="num" dir="ltr">127–189 ₪</span></span></li>
+      <li><a href="#pink-roses">ורדים ורודים</a><span class="n">3 · <span class="num" dir="ltr">325–1315 ₪</span></span></li>
+      <li><a href="#mixed-roses">ורדים מעורבי צבע</a><span class="n">2 · <span class="num" dir="ltr">165–399 ₪</span></span></li>
+      <li><a href="#roses-unspecified">ורדים, צבע לא צוין בשם</a><span class="n">6 · <span class="num" dir="ltr">170–1500 ₪</span></span></li>
+      <li><a href="#gypsophila">גיבסניות</a><span class="n">1 · <span class="num" dir="ltr">120 ₪</span></span></li>
+      <li><a href="#anemones">כלניות</a><span class="n">1 · <span class="num" dir="ltr">129 ₪</span></span></li>
+      <li><a href="#curcuma">כורכומה</a><span class="n">1 · <span class="num" dir="ltr">169 ₪</span></span></li>
+      <li><a href="#method">על מה זה מבוסס</a><span class="n"></span></li>
+    </ol>
+  </nav>
+</section>
+
+<section class="type-page" id="red-roses">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>ורדים אדומים</h2>
+    </div>
+    <p class="define">פרח ראשי: ורדים · צבע: אדום · חד-מיני</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">176–269 ₪</span> <span class="count">· 10 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c5">
+    <article class="card">
+      <a class="thumb-link" href="full/002.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/002.jpg" alt="ורד האהבה"></div></a>
+      <div class="meta">
+        <p class="shop">השווה</p>
+        <p class="price"><span class="num" dir="ltr">210–259 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/007.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/007.jpg" alt="אהבה איטלקית"></div></a>
+      <div class="meta">
+        <p class="shop">השווה</p>
+        <p class="price"><span class="num" dir="ltr">176–239 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/013.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/013.jpg" alt="זר ורדים באהבה"></div></a>
+      <div class="meta">
+        <p class="shop">זר פור יו</p>
+        <p class="price"><span class="num" dir="ltr">209–269 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/028.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/028.jpg" alt="ורדים אדומים וירק"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/052.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/052.jpg" alt="זר פרחים ורדים אדומים"></div></a>
+      <div class="meta">
+        <p class="shop">פרחים תמר</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/058.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-b" title="מקרה גבולי">ג</span></span><img src="thumbs/058.jpg" alt="סידור 5 וורדים אדומים עם יין וסלסלת תותים"></div></a>
+      <div class="meta">
+        <p class="shop">בוקט ירושלים</p>
+        <p class="price"><span class="num" dir="ltr">199 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/068.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/068.jpg" alt="בוקה ורדים אדומים"></div></a>
+      <div class="meta">
+        <p class="shop">פלאוורלי</p>
+        <p class="price"><span class="num" dir="ltr">179 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/069.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/069.jpg" alt="זר ורדים אדומים"></div></a>
+      <div class="meta">
+        <p class="shop">פלאוורלי</p>
+        <p class="price"><span class="num" dir="ltr">229 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/070.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-b" title="מקרה גבולי">ג</span></span><img src="thumbs/070.jpg" alt="זר ורדים אדום לבן יוקרתי"></div></a>
+      <div class="meta">
+        <p class="shop">פלאוורלי</p>
+        <p class="price"><span class="num" dir="ltr">229 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/082.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/082.jpg" alt="זר ורדים אדומים קלאסי"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי חיפה</p>
+        <p class="price"><span class="num" dir="ltr">179 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="lisianthus">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>ליזיאנטוס ורוד או פסטל</h2>
+    </div>
+    <p class="define">פרח ראשי: ליזיאנטוס · לרוב ורוד, פסטל, או מיקס גוונים של אותו פרח · חד-מיני</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">100–400 ₪</span> <span class="count">· 8 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/003.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/003.jpg" alt="זר ליזי ורוד"></div></a>
+      <div class="meta">
+        <p class="shop">השווה</p>
+        <p class="price"><span class="num" dir="ltr">168–219 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/012.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/012.jpg" alt="זר דריה"></div></a>
+      <div class="meta">
+        <p class="shop">זר פור יו</p>
+        <p class="price"><span class="num" dir="ltr">114–251 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/019.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/019.jpg" alt="זר ליזאנטוס לבן וסגול עם ירק"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">190 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <div class="photo"><div class="empty">אין תמונה</div></div>
+      <div class="meta">
+        <p class="shop">פרחי עדן</p>
+        <p class="price"><span class="num" dir="ltr">220–350 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/060.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/060.jpg" alt="זר מיס ליזי"></div></a>
+      <div class="meta">
+        <p class="shop">פלורה בלום</p>
+        <p class="price"><span class="num" dir="ltr">258–400 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/084.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/084.jpg" alt="זר ליזיאנטוס סגול ולבן עם גיפסנית ואקליפטוס"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי חיפה</p>
+        <p class="price"><span class="num" dir="ltr">159 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/087.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-b" title="מקרה גבולי">ג</span></span><img src="thumbs/087.jpg" alt="זר אדום ולבן עם סייפנים וליזיאנטוס"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי חיפה</p>
+        <p class="price"><span class="num" dir="ltr">299 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/092.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/092.jpg" alt="זר ליזיאנטוס ורוד וסגול"></div></a>
+      <div class="meta">
+        <p class="shop">הפרחים של אורן</p>
+        <p class="price"><span class="num" dir="ltr">100–120 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="white-shabbat">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>זר לבן או זר שבת</h2>
+    </div>
+    <p class="define">מעורב, בלי דומיננטיות מאומתת, ובשם יש «לבן» או «שבת»</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">135–250 ₪</span> <span class="count">· 4 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/005.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/005.jpg" alt="נסיכה בלבן"></div></a>
+      <div class="meta">
+        <p class="shop">השווה</p>
+        <p class="price"><span class="num" dir="ltr">154–199 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/022.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-b" title="מקרה גבולי">ג</span></span><img src="thumbs/022.jpg" alt="זר לבן יוקרתי מוורדים ורוד חרצית גדולה"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">200 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/071.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-b" title="מקרה גבולי">ג</span></span><img src="thumbs/071.jpg" alt="אדום לבן ורדים וליליות"></div></a>
+      <div class="meta">
+        <p class="shop">פלאוורלי</p>
+        <p class="price"><span class="num" dir="ltr">229 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/090.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/090.jpg" alt="זר פרחים לבן"></div></a>
+      <div class="meta">
+        <p class="shop">הפרחים של אורן</p>
+        <p class="price"><span class="num" dir="ltr">135–250 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="purple">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>זר סגול</h2>
+    </div>
+    <p class="define">מעורב עם גוון סגול בשם או בהרכב, בלי דומיננטיות מאומתת</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">147–240 ₪</span> <span class="count">· 3 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/001.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/001.jpg" alt="אהבה כתומה סגולה"></div></a>
+      <div class="meta">
+        <p class="shop">השווה</p>
+        <p class="price"><span class="num" dir="ltr">165–194 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/004.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/004.jpg" alt="יפה בסגול"></div></a>
+      <div class="meta">
+        <p class="shop">השווה</p>
+        <p class="price"><span class="num" dir="ltr">147–189 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/015.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-b" title="מקרה גבולי">ג</span></span><img src="thumbs/015.jpg" alt="זר שושן סגול"></div></a>
+      <div class="meta">
+        <p class="shop">זר פור יו</p>
+        <p class="price"><span class="num" dir="ltr">167–240 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="colorful-mix">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>מיקס צבעוני</h2>
+    </div>
+    <p class="define">מעורב צבעוני בלי פרח ראשי מאומת, ובלי תווית לבן, סגול או חמניות</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">137–620 ₪</span> <span class="count">· 28 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c6">
+    <article class="card">
+      <a class="thumb-link" href="full/008.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/008.jpg" alt="סיפור אהבה"></div></a>
+      <div class="meta">
+        <p class="shop">השווה</p>
+        <p class="price"><span class="num" dir="ltr">175–219 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/009.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/009.jpg" alt="זר מודרני"></div></a>
+      <div class="meta">
+        <p class="shop">השווה</p>
+        <p class="price"><span class="num" dir="ltr">155–219 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/011.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/011.jpg" alt="אהבה בשחקים"></div></a>
+      <div class="meta">
+        <p class="shop">השווה, מדור מקומי</p>
+        <p class="price"><span class="num" dir="ltr">137–198 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/020.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/020.jpg" alt="טווידה כחולה וחרצית וגרברות"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/021.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/021.jpg" alt="חרציות שושן ליזיאנטוס"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/024.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/024.jpg" alt="זר ורדים אדומים, גיבסנית לבנה ושושן צחור טרי"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">169 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/025.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/025.jpg" alt="זר נדיר מחרציות, שושן צחור וטויטה כחולה"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">170 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/029.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/029.jpg" alt="זר חרציות, שושן צחור, אקליפטוס וסייפן"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/030.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/030.jpg" alt="זר דליה לבנה וליזיאנטוס"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/031.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/031.jpg" alt="זר צבעוני מחרציות, גיבסנית וליזיאנטוס"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">200 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/035.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/035.jpg" alt="זר נדיר מוורדים אדומים, ליזיאנטוס ואקליפטוס טרי"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/038.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/038.jpg" alt="אסטרומריה ורדים"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/039.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/039.jpg" alt="גרברות ליזיאנטוס ששוון צחור"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/042.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/042.jpg" alt="זר חרצית גרברה"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">199 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/044.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-a" title="תמונה מארכיון">א</span></span><img src="thumbs/044.jpg" alt="זר פיוני וורדים"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי עדן</p>
+        <p class="price"><span class="num" dir="ltr">300–620 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/045.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-a" title="תמונה מארכיון">א</span></span><img src="thumbs/045.jpg" alt="זר טוליפים ופרזיות"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי עדן</p>
+        <p class="price"><span class="num" dir="ltr">300–550 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/055.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/055.jpg" alt="זר פפילון / פפילון צבעוני"></div></a>
+      <div class="meta">
+        <p class="shop">שווליה</p>
+        <p class="price"><span class="num" dir="ltr">340–530 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/061.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/061.jpg" alt="זר ליידי ליליה"></div></a>
+      <div class="meta">
+        <p class="shop">פלורה בלום</p>
+        <p class="price"><span class="num" dir="ltr">240–370 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/062.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/062.jpg" alt="זר פרפרים"></div></a>
+      <div class="meta">
+        <p class="shop">פלורה בלום</p>
+        <p class="price"><span class="num" dir="ltr">310–450 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/074.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/074.jpg" alt="חגיגה ורודה"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי גורדון</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/075.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/075.jpg" alt="אביבי"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי גורדון</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/076.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/076.jpg" alt="פרוע לכל ארוע"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי גורדון</p>
+        <p class="price"><span class="num" dir="ltr">199–399 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/078.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/078.jpg" alt="זר ורדים ורודים ואלסטרומריה צהובה"></div></a>
+      <div class="meta">
+        <p class="shop">אספלאוור חיפה</p>
+        <p class="price"><span class="num" dir="ltr">189 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/083.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/083.jpg" alt="זר ליליות וורדים לבנים עם אקליפטוס"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי חיפה</p>
+        <p class="price"><span class="num" dir="ltr">239 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/085.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/085.jpg" alt="זר ורדים אדומים וחרציות לבנות"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי חיפה</p>
+        <p class="price"><span class="num" dir="ltr">299 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/088.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/088.jpg" alt="יעלי"></div></a>
+      <div class="meta">
+        <p class="shop">שדה פרחים</p>
+        <p class="price"><span class="num" dir="ltr">189–249 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/091.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/091.jpg" alt="זר ורדים וכריזנטמות"></div></a>
+      <div class="meta">
+        <p class="shop">הפרחים של אורן</p>
+        <p class="price"><span class="num" dir="ltr">165 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/093.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/093.jpg" alt="זר משולב שושן צחור"></div></a>
+      <div class="meta">
+        <p class="shop">הפרחים של אורן</p>
+        <p class="price"><span class="num" dir="ltr">210 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="sunflowers">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>חמניות, חד-מיני או דומיננטי</h2>
+    </div>
+    <p class="define">פרח ראשי: חמניות, לבד או בדומיננטיות</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">167–400 ₪</span> <span class="count">· 2 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/014.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/014.jpg" alt="זר חיוכים"></div></a>
+      <div class="meta">
+        <p class="shop">זר פור יו</p>
+        <p class="price"><span class="num" dir="ltr">167 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/050.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-a" title="תמונה מארכיון">א</span></span><img src="thumbs/050.jpg" alt="זר חמניות"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי עדן</p>
+        <p class="price"><span class="num" dir="ltr">230–400 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="sunflower-mix">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>מיקס עם חמניות</h2>
+    </div>
+    <p class="define">יש חמניות בהרכב, אבל הן לא אומתו כדומיננטיות</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">130–259 ₪</span> <span class="count">· 6 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/010.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/010.jpg" alt="אור השמש"></div></a>
+      <div class="meta">
+        <p class="shop">השווה</p>
+        <p class="price"><span class="num" dir="ltr">150–195 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/032.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/032.jpg" alt="חמניות חרציות"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">150 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/033.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/033.jpg" alt="חמניות וורוניקה נדירה"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/040.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/040.jpg" alt="חמניות וטוויטה"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">130 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/086.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/086.jpg" alt="זר חמניות עם ליזיאנטוס סגול"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי חיפה</p>
+        <p class="price"><span class="num" dir="ltr">169 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/089.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/089.jpg" alt="יופי כפרי"></div></a>
+      <div class="meta">
+        <p class="shop">שדה פרחים</p>
+        <p class="price"><span class="num" dir="ltr">199–259 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="gerberas">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>קוקטייל גרברות</h2>
+    </div>
+    <p class="define">פרח ראשי: גרברות, לרוב בצבעים מעורבים</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">153–170 ₪</span> <span class="count">· 1 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/053.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/053.jpg" alt="זר פרחים קוקטייל גרברות"></div></a>
+      <div class="meta">
+        <p class="shop">פרחים תמר</p>
+        <p class="price"><span class="num" dir="ltr">153–170 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="lilies">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>שושן וליליות</h2>
+    </div>
+    <p class="define">פרח ראשי: שושן (ליליות) · חד-מיני או דומיננטי</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">179 ₪</span> <span class="count">· 2 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/054.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/054.jpg" alt="זר פרחים פריחת השושן"></div></a>
+      <div class="meta">
+        <p class="shop">פרחים תמר</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/072.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/072.jpg" alt="בוקה לליות"></div></a>
+      <div class="meta">
+        <p class="shop">פלאוורלי</p>
+        <p class="price"><span class="num" dir="ltr">179 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="tulips">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>טוליפים</h2>
+    </div>
+    <p class="define">פרח ראשי: טוליפים · זר עונתי לחורף ולאביב</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">129–430 ₪</span> <span class="count">· 9 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c5">
+    <article class="card">
+      <a class="thumb-link" href="full/016.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/016.jpg" alt="זר שדה טוליפים"></div></a>
+      <div class="meta">
+        <p class="shop">זר פור יו</p>
+        <p class="price"><span class="num" dir="ltr">179 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/023.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/023.jpg" alt="זר טוליפים לבנים וורודים"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">199 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/048.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-a" title="תמונה מארכיון">א</span></span><img src="thumbs/048.jpg" alt="זר טוליפים עונתי"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי עדן</p>
+        <p class="price"><span class="num" dir="ltr">230–430 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/064.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/064.jpg" alt="זר טוליפים צהובים"></div></a>
+      <div class="meta">
+        <p class="shop">פלאוורלי</p>
+        <p class="price"><span class="num" dir="ltr">129 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/065.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/065.jpg" alt="זר טוליפים לבן"></div></a>
+      <div class="meta">
+        <p class="shop">פלאוורלי</p>
+        <p class="price"><span class="num" dir="ltr">129 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/066.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/066.jpg" alt="זר טוליפים ורודים"></div></a>
+      <div class="meta">
+        <p class="shop">פלאוורלי</p>
+        <p class="price"><span class="num" dir="ltr">129 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/067.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/067.jpg" alt="בוקט טוליפים"></div></a>
+      <div class="meta">
+        <p class="shop">פלאוורלי</p>
+        <p class="price"><span class="num" dir="ltr">129 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <div class="photo"><div class="empty">אין תמונה</div></div>
+      <div class="meta">
+        <p class="shop">פרחי גורדון</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <div class="photo"><div class="empty">אין תמונה</div></div>
+      <div class="meta">
+        <p class="shop">פרחי עירית</p>
+        <p class="price"><span class="num" dir="ltr">230 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="chrysanthemums">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>חרציות</h2>
+    </div>
+    <p class="define">פרח ראשי: חרציות · חד-מיני</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">127–189 ₪</span> <span class="count">· 7 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/017.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/017.jpg" alt="זר גינת חרציות"></div></a>
+      <div class="meta">
+        <p class="shop">זר פור יו</p>
+        <p class="price"><span class="num" dir="ltr">127–169 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/026.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-b" title="מקרה גבולי">ג</span></span><img src="thumbs/026.jpg" alt="חרציות כרבולת"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/027.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/027.jpg" alt="זר עשיר מחרציות טריות לבנות וסגולות עם גיבסנית לבנה נדירה"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">189 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/034.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/034.jpg" alt="חרציות וגיפסי"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/063.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/063.jpg" alt="זר חרציות רומנטי"></div></a>
+      <div class="meta">
+        <p class="shop">פלורה בלום</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/079.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/079.jpg" alt="זר חרציות חגיגי"></div></a>
+      <div class="meta">
+        <p class="shop">אספלאוור חיפה</p>
+        <p class="price"><span class="num" dir="ltr">149 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/081.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/081.jpg" alt="זר חרציות ורודות ולבנות עם אקליפטוס"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי חיפה</p>
+        <p class="price"><span class="num" dir="ltr">159 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="pink-roses">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>ורדים ורודים</h2>
+    </div>
+    <p class="define">פרח ראשי: ורדים · צבע: ורוד · חד-מיני</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">325–1315 ₪</span> <span class="count">· 3 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/036.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/036.jpg" alt="ורדים וורודים טריים"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/056.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-b" title="מקרה גבולי">ג</span></span><img src="thumbs/056.jpg" alt="זר רוזלין"></div></a>
+      <div class="meta">
+        <p class="shop">שווליה</p>
+        <p class="price"><span class="num" dir="ltr">340–560 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/057.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/057.jpg" alt="זר בלוש ליירד"></div></a>
+      <div class="meta">
+        <p class="shop">שווליה</p>
+        <p class="price"><span class="num" dir="ltr">325–1315 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="mixed-roses">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>ורדים מעורבי צבע</h2>
+    </div>
+    <p class="define">פרח ראשי: ורדים בצבעים מעורבים, בלי פרח ראשי אחר</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">165–399 ₪</span> <span class="count">· 2 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/006.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/006.jpg" alt="מיקס ורדים"></div></a>
+      <div class="meta">
+        <p class="shop">השווה</p>
+        <p class="price"><span class="num" dir="ltr">165–199 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/059.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/059.jpg" alt="מיקס 50 ורדים"></div></a>
+      <div class="meta">
+        <p class="shop">בוקט ירושלים</p>
+        <p class="price"><span class="num" dir="ltr">399 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="roses-unspecified">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>ורדים, צבע לא צוין בשם</h2>
+    </div>
+    <p class="define">פרח ראשי: ורדים, אבל הצבע לא נכתב בשם — התמונות מראות את הצבע בפועל</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">170–1500 ₪</span> <span class="count">· 6 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/037.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/037.jpg" alt="זר וורדים גיבסניות"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/041.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/041.jpg" alt="וורדים עם עופרים נדירים"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">170 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/043.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/043.jpg" alt="זר וורדים"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">1000 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/047.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-a" title="תמונה מארכיון">א</span></span><img src="thumbs/047.jpg" alt="ורדים נקי"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי עדן</p>
+        <p class="price"><span class="num" dir="ltr">600–1500 ₪</span></p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/049.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-a" title="תמונה מארכיון">א</span></span><img src="thumbs/049.jpg" alt="זר ורדים צבעוני"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי עדן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+    <article class="card">
+      <a class="thumb-link" href="full/051.jpg" target="_blank" rel="noopener"><div class="photo"><span class="marks marks-card"><span class="mk mk-a" title="תמונה מארכיון">א</span></span><img src="thumbs/051.jpg" alt="זר ורדים בקונוס ענק"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי עדן</p>
+        <p class="price">—</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="gypsophila">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>גיבסניות</h2>
+    </div>
+    <p class="define">פרח ראשי: גיבסנית</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">120 ₪</span> <span class="count">· 1 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/018.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/018.jpg" alt="גיבסניות לבנות"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי יהונתן</p>
+        <p class="price"><span class="num" dir="ltr">120 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="anemones">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>כלניות</h2>
+    </div>
+    <p class="define">פרח ראשי: כלניות · זר עונתי לחורף</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">129 ₪</span> <span class="count">· 1 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/073.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/073.jpg" alt="בוקה כלניות"></div></a>
+      <div class="meta">
+        <p class="shop">פלאוורלי</p>
+        <p class="price"><span class="num" dir="ltr">129 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="type-page" id="curcuma">
+  <header class="type-head">
+    <div class="brandline">
+      <img class="logo-s" src="assets/havatzelet-logo.svg" alt="">
+      <h2>כורכומה</h2>
+    </div>
+    <p class="define">פרח ראשי: כורכומה, לרוב באגרטל</p>
+    <div class="meta-row">
+      <p class="prange">טווח מחירים: <span class="num" dir="ltr">169 ₪</span> <span class="count">· 1 זרים</span></p>
+      <div class="legend-mini">
+        <span class="pair"><span class="mk mk-b">ג</span> מקרה גבולי</span>
+        <span class="pair"><span class="mk mk-a">א</span> תמונה מארכיון</span>
+        <span class="pair">לחיצה על תמונה להגדלה</span>
+      </div>
+    </div>
+  </header>
+  <div class="grid c4">
+    <article class="card">
+      <a class="thumb-link" href="full/080.jpg" target="_blank" rel="noopener"><div class="photo"><img src="thumbs/080.jpg" alt="זר כורכומה עם אגרטל — ורוד או לבן"></div></a>
+      <div class="meta">
+        <p class="shop">פרחי חיפה</p>
+        <p class="price"><span class="num" dir="ltr">169 ₪</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="method" id="method">
+  <h2>על מה זה מבוסס</h2>
+  <p>התמונות נמשכו ב־26 בנובמבר 2026, שעון ישראל, מדפי המוצר של הזרים שנכללו במאגר מ־25 בנובמבר. מקור הסיווג הוא הקובץ <span dir="ltr">bouquets.csv</span> והעמוד «קטלוג זרים קבוע למשתלת חבצלת». לא הומצאו מוצרים ולא הורכבו תמונות.</p>
+  <ul>
+    <li>כשהיה קישור ישיר לדף מוצר, נלקחה תמונת המוצר הראשית (למשל תמונת <span dir="ltr">Open Graph</span>, או תמונת הגלריה הראשונה). ברשת השווה נלקחה התמונה מתוך דף המוצר עצמו.</li>
+    <li>כשבמאגר היה רק קישור לקטגוריה או לדף הבית, איתרתי את דף המוצר לפי השם המדויק: באתרי <span dir="ltr">Shopify</span> דרך קטלוג ה־<span dir="ltr">JSON</span>, באתרי <span dir="ltr">WooCommerce</span> דרך ממשק האתר, אצל פלאוורלי מכרטיס המוצר בדף הקטגוריה, ואצל שדה פרחים ממפת האתר.</li>
+    <li>פרחי עדן חסומים לשליפה חיה (<span dir="ltr">Cloudflare</span>). שמונת הזרים שלהם צולמו מארכיון האינטרנט, מיוני–יולי 2025, לא מיום האיסוף. זה מסומן באות <strong>א</strong> על הכרטיס. לזר «ליזי ורוד» של עדן נמצא דף בארכיון, אבל הורדת התמונה נכשלה, ולכן הוא מסומן «אין תמונה».</li>
+    <li>ל«זר טוליפים לבן» של פרחי גורדון יש דף מוצר חי, אבל אין בו תמונת זר, רק לוגו. לא הוחלף במוצר אחר («טוליפים לבנים»), כדי לא לערבב. ל«זר צבעונים חגיגי» של פרחי עירית האתר חסום, וגם הארכיון לא החזיר את מדור הנמכרים.</li>
+    <li>לא היו החלפות שקטות. המקרה הקרוב להחלפה הוא «זר פפילון / פפילון צבעוני» של שווליה: בדף הנמכרים מופיעים שני מוצרים, וצורפה התמונה של הזר הצבעוני, שמתאים לשם שנרשם במאגר.</li>
+    <li>הסיווג לסוג הוא שיפוט לפי כללי הרכב (פרח ראשי, צבע, חד-מיני מול מעורב), לא נתון שהחנות פרסמה. «הנמכרים ביותר» ברוב האתרים היא תווית של החנות, לא מונה מכירות. רק השווה מפרסמת מונה. אם התמונה לא נראית כמו הסוג, זה מסומן כמקרה גבולי ולא הוסתר.</li>
+    <li>המחירים הם טווח כפי שנשמר במאגר ב־25 בנובמבר 2026, וייתכן שהשתנו מאז. טווח המחירים בראש כל דף מחושב רק מהמחירים שנאספו לאותו סוג (זר בלי מחיר אינו נכנס לטווח).</li>
+    <li>לחיצה על תמונה פותחת את קובץ התמונה המלא (בלי סקריפט). אין כאן חלון הגדלה שמסתמך על <span dir="ltr">JavaScript</span>.</li>
+  </ul>
+  <p>מקרים גבוליים שסומנו אחרי צפייה בתמונות: מארז ורדים עם יין ותותים בבוקט ירושלים; ורדים אדום-לבן שסווגו כאדומים אצל פלאוורלי; סייפנים דומיננטיים בזר שסווג כליזיאנטוס אצל פרחי חיפה; זר «לבן» עם ורדים ורודים אצל יהונתן, וזר אדום-לבן שסווג כלבן אצל פלאוורלי; «זר שושן סגול» של זר פור יו שנראה בעיקר לבן; «חרציות כרבולת» עם שושן בולט; ו«זר רוזלין» של שווליה, שבו האסטרומריה דומיננטית ולא הוורד.</p>
+  <footer class="doc">משתלת חבצלת · מסמך פנימי לאימון ולארגון הקטלוג · 26 בנובמבר 2026, שעון ישראל</footer>
+</section>
+</div>
+</body>
+</html>
