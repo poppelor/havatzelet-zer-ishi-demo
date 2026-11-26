@@ -142,25 +142,24 @@
     .stem:first-of-type { border-top: 0; padding-top: 2px; }
     .stem-name { font-weight: 700; }
     .stem-price { color: var(--muted); font-size: 14px; font-weight: 600; margin-top: 2px; }
-    .stepper { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .stepper button {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      border: 2px solid var(--green);
-      background: #fff;
-      color: var(--green);
-      font-size: 28px;
-      line-height: 1;
-      font-weight: 700;
-      padding: 0;
+    input[type="number"] { -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      appearance: none;
+      margin: 0;
     }
-    .stepper button:active { background: var(--green-soft); }
-    .stepper .qty {
-      min-width: 32px;
-      text-align: center;
+    .qty-in {
+      width: 72px;
+      height: 44px;
+      padding: 4px 6px;
+      font-size: 16px;
       font-weight: 800;
-      font-size: 22px;
+      text-align: center;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      flex-shrink: 0;
     }
     .chips {
       display: flex;
@@ -266,33 +265,21 @@
           <div class="stem-name">ורד אדום</div>
           <div class="stem-price">₪15 לענף</div>
         </div>
-        <div class="stepper">
-          <button type="button" class="minus" aria-label="הורדת כמות ורד אדום">−</button>
-          <div class="qty" aria-live="polite">0</div>
-          <button type="button" class="plus" aria-label="הוספת ורד אדום">+</button>
-        </div>
+        <input class="qty-in" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" enterkeyhint="done" value="0" aria-label="כמות ורד אדום" />
       </div>
       <div class="stem" data-stem="lisianthus">
         <div>
           <div class="stem-name">ליזיאנטוס</div>
           <div class="stem-price">₪15 לענף</div>
         </div>
-        <div class="stepper">
-          <button type="button" class="minus" aria-label="הורדת כמות ליזיאנטוס">−</button>
-          <div class="qty" aria-live="polite">0</div>
-          <button type="button" class="plus" aria-label="הוספת ליזיאנטוס">+</button>
-        </div>
+        <input class="qty-in" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" enterkeyhint="done" value="0" aria-label="כמות ליזיאנטוס" />
       </div>
       <div class="stem" data-stem="greenery">
         <div>
           <div class="stem-name">ירק</div>
           <div class="stem-price">₪6 לענף</div>
         </div>
-        <div class="stepper">
-          <button type="button" class="minus" aria-label="הורדת כמות ירק">−</button>
-          <div class="qty" aria-live="polite">0</div>
-          <button type="button" class="plus" aria-label="הוספת ירק">+</button>
-        </div>
+        <input class="qty-in" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" enterkeyhint="done" value="0" aria-label="כמות ירק" />
       </div>
     </div>
 
@@ -493,18 +480,19 @@
 
       document.querySelectorAll(".stem").forEach(function (row) {
         const key = row.getAttribute("data-stem");
-        const qtyEl = row.querySelector(".qty");
-        row.querySelector(".plus").addEventListener("click", function () {
-          qty[key] += 1;
-          qtyEl.textContent = String(qty[key]);
+        const qtyEl = row.querySelector(".qty-in");
+        qtyEl.addEventListener("input", function () {
+          const cleaned = String(qtyEl.value || "").replace(/\D/g, "");
+          if (qtyEl.value !== cleaned) qtyEl.value = cleaned;
+          const n = cleaned === "" ? 0 : parseInt(cleaned, 10);
+          qty[key] = (!Number.isFinite(n) || n < 0) ? 0 : n;
           renderTotals();
         });
-        row.querySelector(".minus").addEventListener("click", function () {
-          if (qty[key] === 0) return;
-          qty[key] -= 1;
-          qtyEl.textContent = String(qty[key]);
-          renderTotals();
+        qtyEl.addEventListener("blur", function () {
+          if (qtyEl.value === "") qtyEl.value = "0";
+          else qtyEl.value = String(qty[key]);
         });
+        qtyEl.addEventListener("focus", function () { qtyEl.select(); });
       });
 
       document.querySelectorAll("#pct-chips .chip").forEach(function (btn) {
@@ -569,7 +557,7 @@
         document.querySelectorAll(".who button, #pct-chips .chip, .reason-chip").forEach(function (b) {
           b.setAttribute("aria-pressed", "false");
         });
-        document.querySelectorAll(".stem .qty").forEach(function (el) { el.textContent = "0"; });
+        document.querySelectorAll(".stem .qty-in").forEach(function (el) { el.value = "0"; });
         errorEl.style.display = "none";
         renderTotals();
       }

@@ -143,33 +143,6 @@
 
       const table = document.getElementById("recv-table");
 
-      function makeStep(state, qtyEl, onChange) {
-        const box = document.createElement("div");
-        box.className = "stepper";
-        const minus = document.createElement("button");
-        minus.type = "button";
-        minus.textContent = "−";
-        qtyEl.className = "qty";
-        qtyEl.textContent = String(Number(state.qty) || 0);
-        const plus = document.createElement("button");
-        plus.type = "button";
-        plus.textContent = "+";
-        minus.addEventListener("click", function () {
-          state.qty = Math.max(0, (Number(state.qty) || 0) - 1);
-          qtyEl.textContent = String(state.qty);
-          onChange();
-        });
-        plus.addEventListener("click", function () {
-          state.qty = (Number(state.qty) || 0) + 1;
-          qtyEl.textContent = String(state.qty);
-          onChange();
-        });
-        box.appendChild(minus);
-        box.appendChild(qtyEl);
-        box.appendChild(plus);
-        return box;
-      }
-
       function addHead() {
         [["name","פריט"],["","כמות"],["","עלות"],["sum","סכום"]].forEach(function (t) {
           const el = document.createElement("div");
@@ -189,9 +162,13 @@
         const qtyCel = document.createElement("div");
         qtyCel.className = "td cell stem";
         qtyCel.setAttribute("data-stem", s.id);
-        const qtyEl = document.createElement("div");
-        qtyEl.id = "qty-" + s.id;
-        qtyCel.appendChild(makeStep(state, qtyEl, function () { updateStemSum(s); renderBar(); }));
+        const qtyIn = H.makeQtyInput(state.qty, function (next) {
+          state.qty = next;
+          updateStemSum(s);
+          renderBar();
+        }, "כמות " + s.name);
+        qtyIn.id = "qty-" + s.id;
+        qtyCel.appendChild(qtyIn);
         table.appendChild(qtyCel);
 
         const costCel = document.createElement("div");
@@ -260,8 +237,12 @@
 
         const qtyCel = document.createElement("div");
         qtyCel.className = "td cell";
-        const qtyEl = document.createElement("div");
-        qtyCel.appendChild(makeStep(state, qtyEl, function () { updateExSum(i); renderBar(); }));
+        const qtyIn = H.makeQtyInput(state.qty, function (next) {
+          extras[i].qty = next;
+          updateExSum(i);
+          renderBar();
+        }, "כמות פריט נוסף");
+        qtyCel.appendChild(qtyIn);
         table.appendChild(qtyCel);
 
         const costCel = document.createElement("div");

@@ -84,11 +84,11 @@
         cell.setAttribute("data-key", key);
         cell.setAttribute("data-bouquet", b.id);
         cell.setAttribute("data-size", s.id);
-        const stepper = makeStepper(qty[key], function (next) {
+        const input = makeQtyInput(qty[key], function (next) {
           qty[key] = next;
           if (options.onChange) options.onChange();
-        }, "הוספת " + b.name + " " + s.name, "הורדת " + b.name + " " + s.name);
-        cell.appendChild(stepper);
+        }, "כמות " + b.name + " " + s.name);
+        cell.appendChild(input);
         container.appendChild(cell);
       });
     });
@@ -122,48 +122,54 @@
         sum.textContent = "₪" + money((qty[s.name] || 0) * s.price);
       }
       paintCost();
-      const stepper = makeStepper(qty[s.name], function (next) {
+      const input = makeQtyInput(qty[s.name], function (next) {
         qty[s.name] = next;
         paintCost();
         if (options.onChange) options.onChange();
-      }, "הוספת " + s.name, "הורדת " + s.name);
-      cell.appendChild(stepper);
+      }, "כמות " + s.name);
+      cell.appendChild(input);
       container.appendChild(cell);
       container.appendChild(sum);
     });
   }
 
-  function makeStepper(initial, onChange, plusLabel, minusLabel) {
-    let value = initial || 0;
-    const box = document.createElement("div");
-    box.className = "stepper";
-    const minus = document.createElement("button");
-    minus.type = "button";
-    minus.setAttribute("aria-label", minusLabel);
-    minus.textContent = "−";
-    const qtyEl = document.createElement("div");
-    qtyEl.className = "qty";
-    qtyEl.setAttribute("aria-live", "polite");
-    qtyEl.textContent = String(value);
-    const plus = document.createElement("button");
-    plus.type = "button";
-    plus.setAttribute("aria-label", plusLabel);
-    plus.textContent = "+";
-    minus.addEventListener("click", function () {
-      if (value === 0) return;
-      value -= 1;
-      qtyEl.textContent = String(value);
+  function parseQty(raw) {
+    const cleaned = String(raw || "").replace(/\D/g, "");
+    if (cleaned === "") return 0;
+    const n = parseInt(cleaned, 10);
+    if (!Number.isFinite(n) || n < 0) return 0;
+    return n;
+  }
+
+  function makeQtyInput(initial, onChange, label) {
+    let value = parseQty(initial);
+    const input = document.createElement("input");
+    input.type = "text";
+    input.inputMode = "numeric";
+    input.setAttribute("inputmode", "numeric");
+    input.setAttribute("pattern", "[0-9]*");
+    input.setAttribute("autocomplete", "off");
+    input.setAttribute("enterkeyhint", "done");
+    input.className = "qty-in";
+    if (label) input.setAttribute("aria-label", label);
+    input.value = String(value);
+    input.addEventListener("input", function () {
+      const cleaned = String(input.value || "").replace(/\D/g, "");
+      if (input.value !== cleaned) input.value = cleaned;
+      value = parseQty(cleaned);
       onChange(value);
     });
-    plus.addEventListener("click", function () {
-      value += 1;
-      qtyEl.textContent = String(value);
-      onChange(value);
+    input.addEventListener("blur", function () {
+      if (input.value === "") {
+        value = 0;
+        input.value = "0";
+        onChange(value);
+      } else {
+        input.value = String(value);
+      }
     });
-    box.appendChild(minus);
-    box.appendChild(qtyEl);
-    box.appendChild(plus);
-    return box;
+    input.addEventListener("focus", function () { input.select(); });
+    return input;
   }
 
   function hideError() {
@@ -304,6 +310,8 @@
     bindWho: bindWho,
     renderBouquetSteppers: renderBouquetSteppers,
     renderStemSteppers: renderStemSteppers,
+    makeQtyInput: makeQtyInput,
+    parseQty: parseQty,
     hideError: hideError,
     showError: showError,
     showSuccess: showSuccess,
